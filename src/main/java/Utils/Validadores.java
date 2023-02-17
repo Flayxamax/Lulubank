@@ -51,4 +51,18 @@ public class Validadores{
         }
         return false;
     }
+    
+    //Según internet, esta es la validación estándar para correos electrónicos.
+    public boolean validaCorreo(String s) {
+        CharSequence cadena = s; 
+        String recadena = "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
+        
+        Pattern pattern = Pattern.compile(recadena);
+        Matcher matcher = pattern.matcher(cadena);
+        if (matcher.matches()) {
+            return true;
+        }
+        return false;
+    }
+    
 }
