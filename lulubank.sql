@@ -16,6 +16,7 @@ create table Clientes(
     apellido_materno varchar(30) not null,
     fecha_nacimiento date not null,
     edad int not null,
+    correo varchar (30) not null,
     contrasena varchar(20) not null,
     id_direccion int not null,
     foreign key (id_direccion) references Direcciones (id_direccion)
