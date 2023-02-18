@@ -6,6 +6,7 @@ package UI;
 
 import Interfaces.IClientesDAO;
 import Interfaces.IDireccionDAO;
+import java.awt.Color;
 
 /**
  *
@@ -15,6 +16,8 @@ public class inicio extends javax.swing.JFrame {
 
     private final IClientesDAO clientesDAO;
     private final IDireccionDAO direccionDAO;
+    private int xMouse;
+    private int yMouse;
 
     /**
      * Creates new form inicio
@@ -34,66 +37,258 @@ public class inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        lblTitulo = new javax.swing.JLabel();
-        lblRegister = new javax.swing.JLabel();
-        lblIniciar = new javax.swing.JLabel();
+        header = new javax.swing.JPanel();
+        btnSalir = new javax.swing.JPanel();
+        lblX = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        btnRegistrar = new javax.swing.JPanel();
+        lblRegistrar = new javax.swing.JLabel();
         lblInvitado = new javax.swing.JLabel();
-        wp = new javax.swing.JLabel();
+        lblLogo = new javax.swing.JLabel();
+        lblWp = new javax.swing.JLabel();
+        lblCorreo = new javax.swing.JLabel();
+        txtCorreo = new javax.swing.JTextField();
+        sep3 = new javax.swing.JSeparator();
+        lblApellidoM1 = new javax.swing.JLabel();
+        txtPass = new javax.swing.JPasswordField();
+        sep4 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lulubank");
+        setUndecorated(true);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Invitado");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 480, -1, -1));
-
-        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("Registrar");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 420, -1, -1));
-
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Iniciar sesión");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 360, -1, -1));
-
-        lblTitulo.setFont(new java.awt.Font("Franklin Gothic Book", 1, 65)); // NOI18N
-        lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
-        lblTitulo.setText("LuluBank");
-        getContentPane().add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
-
-        lblRegister.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botonGris.png"))); // NOI18N
-        lblRegister.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblRegisterMouseClicked(evt);
+        header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                headerMouseDragged(evt);
             }
         });
-        getContentPane().add(lblRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, -1, -1));
+        header.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                headerMousePressed(evt);
+            }
+        });
 
-        lblIniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botonGris.png"))); // NOI18N
-        getContentPane().add(lblIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 350, -1, -1));
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSalirMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnSalirMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnSalirMouseExited(evt);
+            }
+        });
 
-        lblInvitado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btnA.png"))); // NOI18N
-        getContentPane().add(lblInvitado, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 470, 190, 50));
+        lblX.setFont(new java.awt.Font("Microsoft JhengHei Light", 1, 18)); // NOI18N
+        lblX.setText("X");
+        btnSalir.add(lblX);
 
-        wp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/wp2.jpg"))); // NOI18N
-        getContentPane().add(wp, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 620));
+        javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
+        header.setLayout(headerLayout);
+        headerLayout.setHorizontalGroup(
+            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(headerLayout.createSequentialGroup()
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 860, Short.MAX_VALUE))
+        );
+        headerLayout.setVerticalGroup(
+            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, -1));
+
+        jPanel1.setBackground(new java.awt.Color(102, 51, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnRegistrar.setBackground(new java.awt.Color(51, 102, 255));
+        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRegistrarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRegistrarMouseExited(evt);
+            }
+        });
+
+        lblRegistrar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        lblRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        lblRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRegistrar.setText("REGISTRARSE");
+        lblRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRegistrarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblRegistrarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblRegistrarMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnRegistrarLayout = new javax.swing.GroupLayout(btnRegistrar);
+        btnRegistrar.setLayout(btnRegistrarLayout);
+        btnRegistrarLayout.setHorizontalGroup(
+            btnRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnRegistrarLayout.createSequentialGroup()
+                .addComponent(lblRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        btnRegistrarLayout.setVerticalGroup(
+            btnRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 130, 170, 60));
+
+        lblInvitado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(lblInvitado, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 210, 60, 10));
+
+        lblLogo.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        lblLogo.setForeground(new java.awt.Color(0, 0, 0));
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.png"))); // NOI18N
+        jPanel1.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 400, 140));
+
+        lblWp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Blue Yellow Corporate Banner (Custom).png"))); // NOI18N
+        jPanel1.add(lblWp, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, -3, -1, 730));
+
+        lblCorreo.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        lblCorreo.setForeground(new java.awt.Color(255, 255, 255));
+        lblCorreo.setText("Correo");
+        jPanel1.add(lblCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, -1, -1));
+
+        txtCorreo.setBackground(new java.awt.Color(102, 51, 255));
+        txtCorreo.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
+        txtCorreo.setForeground(new java.awt.Color(204, 204, 204));
+        txtCorreo.setText("Ingrese su correo electronico");
+        txtCorreo.setBorder(null);
+        txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtCorreoMousePressed(evt);
+            }
+        });
+        txtCorreo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCorreoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 330, -1));
+        jPanel1.add(sep3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 370, 330, 10));
+
+        lblApellidoM1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        lblApellidoM1.setForeground(new java.awt.Color(255, 255, 255));
+        lblApellidoM1.setText("Contraseña");
+        jPanel1.add(lblApellidoM1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 440, -1, -1));
+
+        txtPass.setBackground(new java.awt.Color(102, 51, 255));
+        txtPass.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
+        txtPass.setForeground(new java.awt.Color(204, 204, 204));
+        txtPass.setText("contraseña");
+        txtPass.setBorder(null);
+        txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtPassMousePressed(evt);
+            }
+        });
+        txtPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPassActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 480, 330, -1));
+        jPanel1.add(sep4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 510, 330, 10));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 900, 720));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegisterMouseClicked
+    private void txtCorreoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMousePressed
+        // TODO add your handling code here:
+        if(txtCorreo.getText().equals("Ingrese su correo electronico")){
+            txtCorreo.setText("");
+            txtCorreo.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_txtCorreoMousePressed
+
+    private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCorreoActionPerformed
+
+    private void txtPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPassMousePressed
+        // TODO add your handling code here:
+        if(String.valueOf(txtPass.getPassword()).equals("contraseña")){
+            txtPass.setText("");
+            txtPass.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_txtPassMousePressed
+
+    private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPassActionPerformed
+
+    private void btnSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseClicked
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnSalirMouseClicked
+
+    private void btnSalirMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseEntered
+        // TODO add your handling code here:
+        btnSalir.setBackground(Color.red);
+        lblX.setForeground(Color.white);
+    }//GEN-LAST:event_btnSalirMouseEntered
+
+    private void btnSalirMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseExited
+        // TODO add your handling code here:
+        btnSalir.setBackground(new Color(238,238,238));
+        lblX.setForeground(Color.black);
+    }//GEN-LAST:event_btnSalirMouseExited
+
+    private void headerMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMouseDragged
+        // TODO add your handling code here:
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x-xMouse,y-yMouse);
+
+    }//GEN-LAST:event_headerMouseDragged
+
+    private void headerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMousePressed
+        // TODO add your handling code here:
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_headerMousePressed
+
+    private void lblRegistrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseEntered
+        // TODO add your handling code here:
+        btnRegistrar.setBackground(new Color(98,137,255));
+    }//GEN-LAST:event_lblRegistrarMouseEntered
+
+    private void lblRegistrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseExited
+        // TODO add your handling code here:
+        btnRegistrar.setBackground(new Color(32,92,255));
+    }//GEN-LAST:event_lblRegistrarMouseExited
+
+    private void btnRegistrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseEntered
+
+    }//GEN-LAST:event_btnRegistrarMouseEntered
+
+    private void btnRegistrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseExited
+
+    }//GEN-LAST:event_btnRegistrarMouseExited
+
+    private void lblRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseClicked
         // TODO add your handling code here:
         registrarCliente rc = new registrarCliente(clientesDAO, direccionDAO);
         rc.setVisible(true);
         dispose();
-    }//GEN-LAST:event_lblRegisterMouseClicked
+    }//GEN-LAST:event_lblRegistrarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -131,13 +326,20 @@ public class inicio extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel lblIniciar;
+    private javax.swing.JPanel btnRegistrar;
+    private javax.swing.JPanel btnSalir;
+    private javax.swing.JPanel header;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblApellidoM1;
+    private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblInvitado;
-    private javax.swing.JLabel lblRegister;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel wp;
+    private javax.swing.JLabel lblLogo;
+    private javax.swing.JLabel lblRegistrar;
+    private javax.swing.JLabel lblWp;
+    private javax.swing.JLabel lblX;
+    private javax.swing.JSeparator sep3;
+    private javax.swing.JSeparator sep4;
+    private javax.swing.JTextField txtCorreo;
+    private javax.swing.JPasswordField txtPass;
     // End of variables declaration//GEN-END:variables
 }

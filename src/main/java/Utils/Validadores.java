@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  *
  * @author ildex
  */
-public class Validadores{
+public class Validadores {
 
     public boolean validaContrasena(String s) {
         CharSequence cadena = s;
@@ -42,6 +42,25 @@ public class Validadores{
     public boolean validaApellido(String s) {
         CharSequence cadena = s;
         String recadena = "^[a-zA-Z]{3,30}$";
+
+        Pattern pattern = Pattern.compile(recadena);
+
+        Matcher matcher = pattern.matcher(cadena);
+        if (matcher.matches()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Valida cadenas que representen direcciones de correos electronicos
+     *
+     * @param s Cadena
+     * @return true si la validación es correcta, false en caso contrario
+     */
+    public boolean validaEmail(String s) {
+        CharSequence cadena = s;
+        String recadena = "\\w+@[a-z]+\\.[a-z]{1,4}";
 
         Pattern pattern = Pattern.compile(recadena);
 

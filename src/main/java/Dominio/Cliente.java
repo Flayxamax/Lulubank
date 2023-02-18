@@ -18,29 +18,32 @@ public class Cliente {
     private String apellidoMaterno;
     private String fechaNacimiento;
     private int edad;
+    private String correo;
     private String password;
     private int idDireccion;
 
     public Cliente() {
     }
 
-    public Cliente(Integer idCliente, String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento, int edad, String password, int idDireccion) {
+    public Cliente(Integer idCliente, String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento, int edad, String correo, String password, int idDireccion) {
         this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.fechaNacimiento = fechaNacimiento;
         this.edad = edad;
+        this.correo = correo;
         this.password = password;
         this.idDireccion = idDireccion;
     }
 
-    public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento, int edad, String password, int idDireccion) {
+    public Cliente(String nombre, String apellidoPaterno, String apellidoMaterno, String fechaNacimiento, int edad, String correo, String password, int idDireccion) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.fechaNacimiento = fechaNacimiento;
         this.edad = edad;
+        this.correo = correo;
         this.password = password;
         this.idDireccion = idDireccion;
     }
@@ -109,6 +112,14 @@ public class Cliente {
         this.idDireccion = idDireccion;
     }
 
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -133,7 +144,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + idCliente + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", password=" + password + ", idDireccion=" + idDireccion + '}';
+        return "Cliente{" + "idCliente=" + idCliente + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", correo=" + correo + ", password=" + password + ", idDireccion=" + idDireccion + '}';
     }
 
 }
