@@ -31,35 +31,40 @@ public class ClientesDAO implements IClientesDAO {
         this.GENERADOR_CONEXIONES = generadorConexiones;
     }
 
-//    @Override
-    public Cliente consultar(Integer idCliente) throws PersistenciaException {
-//        String consulta = "SELECT id,nombre,apellido_paterno,apellido_materno,"
-//                + "idDireccion FROM clientes WHERE id=?";
-//        try (
-//                Connection conexion = GENERADOR_CONEXIONES.crearConexion();
-//                PreparedStatement comando = conexion.prepareStatement(consulta);) {
-//            comando.setInt(1, idCliente);
-//            ResultSet registro = comando.executeQuery();
-//            Cliente cliente = null;
-//            if (registro.next()) {
-//                Integer id = registro.getInt("id");
-//                String nombre = registro.getString("nombre");
-//                String apellidoPaterno = registro.getString("apellido_paterno");
-//                String apellidoMaterno = registro.getString("apellido_materno");
-//                Integer idDireccion = registro.getInt("idDireccion");
+    /**
+     *
+     * @param correo
+     * @param contrasena
+     * @return null
+     * @throws PersistenciaException
+     */
+    @Override
+    public boolean consultar(String correo, String contrasena) throws PersistenciaException {
+        boolean siEs=false;
+        String consulta = "SELECT correo,contrasena FROM clientes WHERE correo=? and contrasena=?";
+        try (
+                Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(consulta);) {
+            comando.setString(7, correo);
+            comando.setString(8, contrasena);
+            ResultSet registro = comando.executeQuery();
+            Cliente cliente = null;
+            if (registro.next()) {
+                siEs = true;
+                String correoC = registro.getString("correo");
+                String contrasenaC = registro.getString("contrasena");
 //                cliente = new Cliente();
-//                cliente.setId(id);
-//                cliente.setNombre(nombre);
+//                cliente.setCorreo(correoC);
+//                cliente.setPassword(contrasenaC);
 //                cliente.setApellidoPaterno(apellidoPaterno);
 //                cliente.setApellidoMaterno(apellidoMaterno);
 //                cliente.setIdDireccion(idDireccion);
-//            }
-//            return cliente;
-//        } catch (SQLException e) {
-//            LOG.log(Level.SEVERE, e.getMessage());
-//            return null;
-//        }
-        return null;
+            }else{
+                System.out.println("tas tilin esa no es");
+            }
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, e.getMessage());
+        }
+        return siEs;
     }
 
 //    @Override
@@ -99,7 +104,7 @@ public class ClientesDAO implements IClientesDAO {
     @Override
     public Cliente insertar(Cliente cliente) throws PersistenciaException {
         String codigoSQL = "INSERT INTO clientes(nombre,apellido_paterno,"
-                + "apellido_materno,fecha_nacimiento, edad,correo, contrasena, id_direccion) VALUES (?,?,?,?,?,?,aes_encrypt(?),?)";
+                + "apellido_materno,fecha_nacimiento, edad,correo, contrasena, id_direccion) VALUES (?,?,?,?,?,?,SHA(?),?)";
         try (
                 Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL, Statement.RETURN_GENERATED_KEYS);) {
@@ -126,18 +131,18 @@ public class ClientesDAO implements IClientesDAO {
         }
     }
 
-    @Override
-    public Cliente eliminar(Integer idCliente) throws PersistenciaException {
-        String codigoSQL = "DELETE FROM clientes where id = ?";
-        try (
-                Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL);) {
-            Cliente cliente = consultar(idCliente);
-            comando.setInt(1, idCliente);
-            comando.executeUpdate();
-            return cliente;
-        } catch (SQLException e) {
-            LOG.log(Level.SEVERE, e.getMessage());
-            return null;
-        }
-    }
+//    @Override
+//    public Cliente eliminar(Integer idCliente) throws PersistenciaException {
+//        String codigoSQL = "DELETE FROM clientes where id = ?";
+//        try (
+//                Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL);) {
+//            Cliente cliente = consultar(idCliente);
+//            comando.setInt(1, idCliente);
+//            comando.executeUpdate();
+//            return cliente;
+//        } catch (SQLException e) {
+//            LOG.log(Level.SEVERE, e.getMessage());
+//            return null;
+//        }
+//    }
 }

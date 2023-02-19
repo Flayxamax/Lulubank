@@ -48,6 +48,13 @@ public class Cliente {
         this.idDireccion = idDireccion;
     }
 
+    public Cliente(String correo, String password) {
+        this.correo = correo;
+        this.password = password;
+    }
+    
+    
+
     public Integer getIdCliente() {
         return idCliente;
     }

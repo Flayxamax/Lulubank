@@ -14,8 +14,8 @@ import java.util.List;
  * @author ildex
  */
 public interface IClientesDAO {
-    Cliente consultar(Integer idCliente) throws PersistenciaException;
+    boolean consultar(String correo, String contrasena) throws PersistenciaException;
     Cliente insertar (Cliente cliente) throws PersistenciaException;
-    Cliente eliminar (Integer idCliente) throws PersistenciaException;
+//    Cliente eliminar (Integer idCliente) throws PersistenciaException;
     List<Cliente> consultarLista(ConfiguracionPaginado configPaginado) throws PersistenciaException;
 }

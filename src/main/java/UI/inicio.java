@@ -4,9 +4,16 @@
  */
 package UI;
 
+import Dominio.Cliente;
+import Dominio.Direccion;
 import Interfaces.IClientesDAO;
 import Interfaces.IDireccionDAO;
 import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -28,6 +35,12 @@ public class inicio extends javax.swing.JFrame {
         this.direccionDAO = direccionDAO;
     }
 
+    private Cliente extraerDatosFormulario() {
+        String correo = this.txtCorreo.getText();
+        String contrasena = this.txtPass.getText();
+        return cliente;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,6 +54,8 @@ public class inicio extends javax.swing.JFrame {
         btnSalir = new javax.swing.JPanel();
         lblX = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        btnIniciarSesion = new javax.swing.JPanel();
+        lblIniciarSesion = new javax.swing.JLabel();
         btnRegistrar = new javax.swing.JPanel();
         lblRegistrar = new javax.swing.JLabel();
         lblInvitado = new javax.swing.JLabel();
@@ -52,6 +67,7 @@ public class inicio extends javax.swing.JFrame {
         lblApellidoM1 = new javax.swing.JLabel();
         txtPass = new javax.swing.JPasswordField();
         sep4 = new javax.swing.JSeparator();
+        lblRegistrar1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lulubank");
@@ -70,7 +86,7 @@ public class inicio extends javax.swing.JFrame {
             }
         });
 
-        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnSalirMouseClicked(evt);
@@ -105,8 +121,50 @@ public class inicio extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(102, 51, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btnIniciarSesion.setBackground(new java.awt.Color(51, 102, 255));
+        btnIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnIniciarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnIniciarSesionMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnIniciarSesionMouseExited(evt);
+            }
+        });
+
+        lblIniciarSesion.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        lblIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        lblIniciarSesion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblIniciarSesion.setText("INICIAR SESION");
+        lblIniciarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblIniciarSesionMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblIniciarSesionMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblIniciarSesionMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnIniciarSesionLayout = new javax.swing.GroupLayout(btnIniciarSesion);
+        btnIniciarSesion.setLayout(btnIniciarSesionLayout);
+        btnIniciarSesionLayout.setHorizontalGroup(
+            btnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnIniciarSesionLayout.createSequentialGroup()
+                .addComponent(lblIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        btnIniciarSesionLayout.setVerticalGroup(
+            btnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblIniciarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 570, 170, 60));
+
         btnRegistrar.setBackground(new java.awt.Color(51, 102, 255));
-        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnRegistrarMouseEntered(evt);
@@ -116,10 +174,10 @@ public class inicio extends javax.swing.JFrame {
             }
         });
 
-        lblRegistrar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
-        lblRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         lblRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRegistrar.setText("REGISTRARSE");
+        lblRegistrar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        lblRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         lblRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblRegistrarMouseClicked(evt);
@@ -147,7 +205,7 @@ public class inicio extends javax.swing.JFrame {
 
         jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 130, 170, 60));
 
-        lblInvitado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblInvitado.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel1.add(lblInvitado, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 210, 60, 10));
 
         lblLogo.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
@@ -156,18 +214,18 @@ public class inicio extends javax.swing.JFrame {
         jPanel1.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 400, 140));
 
         lblWp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Blue Yellow Corporate Banner (Custom).png"))); // NOI18N
-        jPanel1.add(lblWp, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, -3, -1, 730));
+        jPanel1.add(lblWp, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 0, -1, 720));
 
         lblCorreo.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         lblCorreo.setForeground(new java.awt.Color(255, 255, 255));
         lblCorreo.setText("Correo");
         jPanel1.add(lblCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, -1, -1));
 
+        txtCorreo.setText("Ingrese su correo electronico");
         txtCorreo.setBackground(new java.awt.Color(102, 51, 255));
+        txtCorreo.setBorder(null);
         txtCorreo.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtCorreo.setForeground(new java.awt.Color(204, 204, 204));
-        txtCorreo.setText("Ingrese su correo electronico");
-        txtCorreo.setBorder(null);
         txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtCorreoMousePressed(evt);
@@ -186,11 +244,11 @@ public class inicio extends javax.swing.JFrame {
         lblApellidoM1.setText("Contraseña");
         jPanel1.add(lblApellidoM1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 440, -1, -1));
 
+        txtPass.setText("contraseña");
         txtPass.setBackground(new java.awt.Color(102, 51, 255));
+        txtPass.setBorder(null);
         txtPass.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtPass.setForeground(new java.awt.Color(204, 204, 204));
-        txtPass.setText("contraseña");
-        txtPass.setBorder(null);
         txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtPassMousePressed(evt);
@@ -204,6 +262,23 @@ public class inicio extends javax.swing.JFrame {
         jPanel1.add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 480, 330, -1));
         jPanel1.add(sep4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 510, 330, 10));
 
+        lblRegistrar1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        lblRegistrar1.setForeground(new java.awt.Color(255, 255, 255));
+        lblRegistrar1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRegistrar1.setText("REGISTRARSE");
+        lblRegistrar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblRegistrar1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblRegistrar1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblRegistrar1MouseExited(evt);
+            }
+        });
+        jPanel1.add(lblRegistrar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 200, 169, 48));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 900, 720));
 
         pack();
@@ -212,7 +287,7 @@ public class inicio extends javax.swing.JFrame {
 
     private void txtCorreoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMousePressed
         // TODO add your handling code here:
-        if(txtCorreo.getText().equals("Ingrese su correo electronico")){
+        if (txtCorreo.getText().equals("Ingrese su correo electronico")) {
             txtCorreo.setText("");
             txtCorreo.setForeground(Color.black);
         }
@@ -224,7 +299,7 @@ public class inicio extends javax.swing.JFrame {
 
     private void txtPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPassMousePressed
         // TODO add your handling code here:
-        if(String.valueOf(txtPass.getPassword()).equals("contraseña")){
+        if (String.valueOf(txtPass.getPassword()).equals("contraseña")) {
             txtPass.setText("");
             txtPass.setForeground(Color.black);
         }
@@ -247,7 +322,7 @@ public class inicio extends javax.swing.JFrame {
 
     private void btnSalirMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalirMouseExited
         // TODO add your handling code here:
-        btnSalir.setBackground(new Color(238,238,238));
+        btnSalir.setBackground(new Color(238, 238, 238));
         lblX.setForeground(Color.black);
     }//GEN-LAST:event_btnSalirMouseExited
 
@@ -255,7 +330,7 @@ public class inicio extends javax.swing.JFrame {
         // TODO add your handling code here:
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
-        this.setLocation(x-xMouse,y-yMouse);
+        this.setLocation(x - xMouse, y - yMouse);
 
     }//GEN-LAST:event_headerMouseDragged
 
@@ -267,12 +342,12 @@ public class inicio extends javax.swing.JFrame {
 
     private void lblRegistrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseEntered
         // TODO add your handling code here:
-        btnRegistrar.setBackground(new Color(98,137,255));
+        btnRegistrar.setBackground(new Color(98, 137, 255));
     }//GEN-LAST:event_lblRegistrarMouseEntered
 
     private void lblRegistrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseExited
         // TODO add your handling code here:
-        btnRegistrar.setBackground(new Color(32,92,255));
+        btnRegistrar.setBackground(new Color(32, 92, 255));
     }//GEN-LAST:event_lblRegistrarMouseExited
 
     private void btnRegistrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseEntered
@@ -289,6 +364,39 @@ public class inicio extends javax.swing.JFrame {
         rc.setVisible(true);
         dispose();
     }//GEN-LAST:event_lblRegistrarMouseClicked
+
+    private void lblRegistrar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrar1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblRegistrar1MouseClicked
+
+    private void lblRegistrar1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrar1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblRegistrar1MouseEntered
+
+    private void lblRegistrar1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrar1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblRegistrar1MouseExited
+
+    private void btnIniciarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIniciarSesionMouseEntered
+
+    private void btnIniciarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIniciarSesionMouseExited
+
+    private void lblIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIniciarSesionMouseClicked
+        // TODO add your handling code here:
+        Cliente
+    }//GEN-LAST:event_lblIniciarSesionMouseClicked
+
+    private void lblIniciarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIniciarSesionMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblIniciarSesionMouseEntered
+
+    private void lblIniciarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIniciarSesionMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblIniciarSesionMouseExited
 
     /**
      * @param args the command line arguments
@@ -326,15 +434,18 @@ public class inicio extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel btnIniciarSesion;
     private javax.swing.JPanel btnRegistrar;
     private javax.swing.JPanel btnSalir;
     private javax.swing.JPanel header;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblApellidoM1;
     private javax.swing.JLabel lblCorreo;
+    private javax.swing.JLabel lblIniciarSesion;
     private javax.swing.JLabel lblInvitado;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblRegistrar;
+    private javax.swing.JLabel lblRegistrar1;
     private javax.swing.JLabel lblWp;
     private javax.swing.JLabel lblX;
     private javax.swing.JSeparator sep3;
