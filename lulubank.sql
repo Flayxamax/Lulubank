@@ -2,6 +2,8 @@ create database lulubank;
 
 use lulubank;
 
+
+
 create table Direcciones(
     id_direccion int PRIMARY KEY AUTO_INCREMENT,
     calle varchar(50) not null,
@@ -17,7 +19,7 @@ create table Clientes(
     fecha_nacimiento date not null,
     edad int not null,
     correo varchar (30) not null unique,
-    contrasena varchar(20) not null,
+    contrasena blob not null,
     id_direccion int not null,
     foreign key (id_direccion) references Direcciones (id_direccion)
 );
@@ -45,3 +47,20 @@ create table Retiros(
     id_cuenta int,
     foreign key (id_cuenta) references Cuentas (id_cuenta)
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

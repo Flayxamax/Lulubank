@@ -33,30 +33,28 @@ public class ClientesDAO implements IClientesDAO {
 
     /**
      *
+     * @param cliente
      * @param correo
      * @param contrasena
      * @return null
      * @throws PersistenciaException
      */
     @Override
-    public boolean consultar(String correo) throws PersistenciaException {
-        boolean siEs=false;
-        String consulta = "SELECT correo,aes_decrypt(contrasena,'hunter2') FROM clientes WHERE correo=?";
+    public Cliente consultar(String correo) throws PersistenciaException {
+        Cliente cliente = new Cliente();
+        String consulta = "SELECT id_cliente, correo,aes_decrypt(contrasena,'hunter2') as 'contrasena' FROM clientes WHERE correo = ?";
         try (
-                Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(consulta);) {
+            Connection conexion = GENERADOR_CONEXIONES.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(consulta);) {
             comando.setString(1, correo);
             ResultSet registro = comando.executeQuery();
-            Cliente cliente = null;
             if (registro.next()) {
-                siEs = true;
-                String correoC = registro.getString("correo");
-            }else{
-                System.out.println("tas tilin esa no es");
+                cliente.setPassword(registro.getString("contrasena"));
             }
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, e.getMessage());
         }
-        return siEs;
+        return cliente;
     }
 
 //    @Override

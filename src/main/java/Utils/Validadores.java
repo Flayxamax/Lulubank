@@ -70,4 +70,17 @@ public class Validadores {
         }
         return false;
     }
+    
+    public boolean esVacia(String s) {
+        CharSequence cadena = s;
+        String recadena = "^.+$";
+
+        Pattern pattern = Pattern.compile(recadena);
+
+        Matcher matcher = pattern.matcher(cadena);
+        if (matcher.matches()) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -42,9 +42,11 @@ UI\inicio$6.class
 Utils\ConfiguracionPaginado.class
 UI\registrarCliente$5.class
 UI\inicio$3.class
+Utils\TextPrompt.class
 UI\registrarCliente$23.class
 UI\registrarCliente$11.class
 UI\registrarCliente$8.class
 UI\inicio$7.class
+Utils\TextPrompt$Show.class
 Interfaces\IConexionBD.class
 Dominio\Direccion.class

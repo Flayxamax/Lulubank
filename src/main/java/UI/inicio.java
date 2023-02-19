@@ -5,15 +5,12 @@
 package UI;
 
 import Dominio.Cliente;
-import Dominio.Direccion;
 import Excepciones.PersistenciaException;
 import Interfaces.IClientesDAO;
 import Interfaces.IDireccionDAO;
+import Utils.TextPrompt;
+import Utils.Validadores;
 import java.awt.Color;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -26,23 +23,29 @@ public class inicio extends javax.swing.JFrame {
 
     private final IClientesDAO clientesDAO;
     private final IDireccionDAO direccionDAO;
+    private final Validadores validadores = new Validadores();
     private int xMouse;
     private int yMouse;
 
     /**
      * Creates new form inicio
+     *
+     * @param clientesDAO
+     * @param direccionDAO
      */
     public inicio(IClientesDAO clientesDAO, IDireccionDAO direccionDAO) {
         initComponents();
         this.clientesDAO = clientesDAO;
         this.direccionDAO = direccionDAO;
+        TextPrompt p=new TextPrompt("Ingrese su correo electrónico",txtCorreo);
+        TextPrompt a=new TextPrompt("Ingrese su contraseña",txtPass);
     }
 
-    private boolean extraerDatosFormulario() throws PersistenciaException {
+    private Cliente extraerDatosFormulario() throws PersistenciaException {
         String correo = this.txtCorreo.getText();
         String contrasena = this.txtPass.getText();
-        boolean tilin = clientesDAO.consultar(correo);
-        return tilin;
+        Cliente cliente = new Cliente(correo, contrasena);
+        return cliente;
     }
 
     /**
@@ -178,10 +181,10 @@ public class inicio extends javax.swing.JFrame {
             }
         });
 
-        lblRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRegistrar.setText("REGISTRARSE");
         lblRegistrar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         lblRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        lblRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRegistrar.setText("REGISTRARSE");
         lblRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblRegistrarMouseClicked(evt);
@@ -213,7 +216,6 @@ public class inicio extends javax.swing.JFrame {
         jPanel1.add(lblInvitado, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 210, 60, 10));
 
         lblLogo.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        lblLogo.setForeground(new java.awt.Color(0, 0, 0));
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.png"))); // NOI18N
         jPanel1.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 400, 140));
 
@@ -225,11 +227,11 @@ public class inicio extends javax.swing.JFrame {
         lblCorreo.setText("Correo");
         jPanel1.add(lblCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, -1, -1));
 
-        txtCorreo.setText("Ingrese su correo electronico");
         txtCorreo.setBackground(new java.awt.Color(102, 51, 255));
-        txtCorreo.setBorder(null);
         txtCorreo.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtCorreo.setForeground(new java.awt.Color(204, 204, 204));
+        txtCorreo.setForeground(new java.awt.Color(255, 255, 255));
+        txtCorreo.setBorder(null);
+        txtCorreo.setName(""); // NOI18N
         txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtCorreoMousePressed(evt);
@@ -248,11 +250,10 @@ public class inicio extends javax.swing.JFrame {
         lblApellidoM1.setText("Contraseña");
         jPanel1.add(lblApellidoM1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 440, -1, -1));
 
-        txtPass.setText("contraseña");
         txtPass.setBackground(new java.awt.Color(102, 51, 255));
-        txtPass.setBorder(null);
         txtPass.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtPass.setForeground(new java.awt.Color(204, 204, 204));
+        txtPass.setForeground(new java.awt.Color(255, 255, 255));
+        txtPass.setBorder(null);
         txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtPassMousePressed(evt);
@@ -290,23 +291,15 @@ public class inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtCorreoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMousePressed
-        // TODO add your handling code here:
-        if (txtCorreo.getText().equals("Ingrese su correo electronico")) {
-            txtCorreo.setText("");
-            txtCorreo.setForeground(Color.black);
-        }
+
     }//GEN-LAST:event_txtCorreoMousePressed
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtCorreoActionPerformed
 
     private void txtPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPassMousePressed
-        // TODO add your handling code here:
-        if (String.valueOf(txtPass.getPassword()).equals("contraseña")) {
-            txtPass.setText("");
-            txtPass.setForeground(Color.black);
-        }
+
     }//GEN-LAST:event_txtPassMousePressed
 
     private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
@@ -390,14 +383,20 @@ public class inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarSesionMouseExited
 
     private void lblIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIniciarSesionMouseClicked
-        try {
-            // TODO add your handling code here:
-            if(extraerDatosFormulario()==false){
-                JOptionPane.showMessageDialog(this, "algo anda mal xdxdxdxd", "Error", 0);
-            } else{
-                JOptionPane.showMessageDialog(this, "te debe de mandar a la otra ventana ya ingresando, algo bien", "Error", 0);
-            }} catch (PersistenciaException ex) {
-            Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
+        if (!validadores.esVacia(txtCorreo.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo de correo vacío", "Error", 0);
+        } else if (!validadores.esVacia(txtPass.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo de contraseña vacío", "Error", 0);
+        } else {
+            try {
+                Cliente cliente = this.extraerDatosFormulario();
+                Cliente clienteLogin = this.clientesDAO.consultar(cliente.getCorreo());
+                if (txtPass.getText().equals(clienteLogin.getPassword())) {
+                    System.out.println("niqqa");
+                }
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_lblIniciarSesionMouseClicked
 

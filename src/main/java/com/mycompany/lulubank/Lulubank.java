@@ -23,7 +23,7 @@ public class Lulubank {
         IConexionBD generadorConexiones = new ConexionBD(
                 "jdbc:mysql://localhost/lulubank",
                 "root",
-                "1234");
+                "laresrangel");
         IClientesDAO clientesDAO = new ClientesDAO(generadorConexiones);
         IDireccionDAO direccionDAO = new DireccionDAO(generadorConexiones);
         new inicio(clientesDAO, direccionDAO).setVisible(true);
