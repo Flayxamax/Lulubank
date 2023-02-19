@@ -6,6 +6,7 @@ package UI;
 
 import Dominio.Cliente;
 import Dominio.Direccion;
+import Excepciones.PersistenciaException;
 import Interfaces.IClientesDAO;
 import Interfaces.IDireccionDAO;
 import java.awt.Color;
@@ -13,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -35,10 +38,11 @@ public class inicio extends javax.swing.JFrame {
         this.direccionDAO = direccionDAO;
     }
 
-    private Cliente extraerDatosFormulario() {
+    private boolean extraerDatosFormulario() throws PersistenciaException {
         String correo = this.txtCorreo.getText();
         String contrasena = this.txtPass.getText();
-        return cliente;
+        boolean tilin = clientesDAO.consultar(correo);
+        return tilin;
     }
 
     /**
@@ -386,8 +390,15 @@ public class inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarSesionMouseExited
 
     private void lblIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIniciarSesionMouseClicked
-        // TODO add your handling code here:
-        Cliente
+        try {
+            // TODO add your handling code here:
+            if(extraerDatosFormulario()==false){
+                JOptionPane.showMessageDialog(this, "algo anda mal xdxdxdxd", "Error", 0);
+            } else{
+                JOptionPane.showMessageDialog(this, "te debe de mandar a la otra ventana ya ingresando, algo bien", "Error", 0);
+            }} catch (PersistenciaException ex) {
+            Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_lblIniciarSesionMouseClicked
 
     private void lblIniciarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIniciarSesionMouseEntered

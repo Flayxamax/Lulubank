@@ -39,25 +39,17 @@ public class ClientesDAO implements IClientesDAO {
      * @throws PersistenciaException
      */
     @Override
-    public boolean consultar(String correo, String contrasena) throws PersistenciaException {
+    public boolean consultar(String correo) throws PersistenciaException {
         boolean siEs=false;
-        String consulta = "SELECT correo,contrasena FROM clientes WHERE correo=? and contrasena=?";
+        String consulta = "SELECT correo,aes_decrypt(contrasena,'hunter2') FROM clientes WHERE correo=?";
         try (
                 Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(consulta);) {
-            comando.setString(7, correo);
-            comando.setString(8, contrasena);
+            comando.setString(1, correo);
             ResultSet registro = comando.executeQuery();
             Cliente cliente = null;
             if (registro.next()) {
                 siEs = true;
                 String correoC = registro.getString("correo");
-                String contrasenaC = registro.getString("contrasena");
-//                cliente = new Cliente();
-//                cliente.setCorreo(correoC);
-//                cliente.setPassword(contrasenaC);
-//                cliente.setApellidoPaterno(apellidoPaterno);
-//                cliente.setApellidoMaterno(apellidoMaterno);
-//                cliente.setIdDireccion(idDireccion);
             }else{
                 System.out.println("tas tilin esa no es");
             }
@@ -104,7 +96,7 @@ public class ClientesDAO implements IClientesDAO {
     @Override
     public Cliente insertar(Cliente cliente) throws PersistenciaException {
         String codigoSQL = "INSERT INTO clientes(nombre,apellido_paterno,"
-                + "apellido_materno,fecha_nacimiento, edad,correo, contrasena, id_direccion) VALUES (?,?,?,?,?,?,SHA(?),?)";
+                + "apellido_materno,fecha_nacimiento, edad,correo, contrasena, id_direccion) VALUES (?,?,?,?,?,?,aes_encrypt(?,'hunter2'),?)";
         try (
                 Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL, Statement.RETURN_GENERATED_KEYS);) {
