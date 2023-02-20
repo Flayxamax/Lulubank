@@ -10,6 +10,7 @@ import Excepciones.PersistenciaException;
 import Interfaces.IClientesDAO;
 import Interfaces.IDireccionDAO;
 import Utils.ConfiguracionPaginado;
+import Utils.TextPrompt;
 import Utils.Validadores;
 import implementaciones.ClientesDAO;
 import java.awt.Color;
@@ -47,6 +48,14 @@ public class registrarCliente extends javax.swing.JFrame {
         LocalDate fechaActual = LocalDate.now();
         LocalDate minFecha = LocalDate.of(1900, 01, 01);
         calendar.getSettings().setDateRangeLimits(minFecha, fechaActual);
+        TextPrompt nombre = new TextPrompt("Ingrese su nombre", txtNombre);
+        TextPrompt aPaterno = new TextPrompt("Ingrese su apellido paterno", txtApellidoP);
+        TextPrompt aMaterno = new TextPrompt("Ingrese su apellido materno", txtApellidoM);
+        TextPrompt correo = new TextPrompt("Ingrese su correo electrónico", txtCorreo);
+        TextPrompt contrasena = new TextPrompt("Ingrese su contraseña", txtPass);
+        TextPrompt calle = new TextPrompt("Ingrese su calle", txtCalle);
+        TextPrompt colonia = new TextPrompt("Ingrese su nombre", txtColonia);
+        TextPrompt numCasa = new TextPrompt("Ingrese su número de casa", txtNumCasa);
     }
 
     private Cliente extraerDatosFormulario(Direccion direccionGuardada) {

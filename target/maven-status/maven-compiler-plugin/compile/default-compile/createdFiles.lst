@@ -14,6 +14,7 @@ UI\registrarCliente$15.class
 UI\registrarCliente.class
 UI\inicio$8.class
 UI\registrarCliente$3.class
+UI\inicio$13.class
 UI\registrarCliente$13.class
 Dominio\Cliente.class
 UI\registrarCliente$21.class
@@ -27,6 +28,7 @@ UI\registrarCliente$14.class
 UI\inicio$9.class
 UI\registrarCliente$24.class
 Excepciones\PersistenciaException.class
+UI\inicio$14.class
 UI\registrarCliente$6.class
 UI\registrarCliente$2.class
 UI\inicio.class

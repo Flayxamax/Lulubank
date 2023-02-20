@@ -11,6 +11,8 @@ import Interfaces.IDireccionDAO;
 import Utils.TextPrompt;
 import Utils.Validadores;
 import java.awt.Color;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -37,8 +39,8 @@ public class inicio extends javax.swing.JFrame {
         initComponents();
         this.clientesDAO = clientesDAO;
         this.direccionDAO = direccionDAO;
-        TextPrompt p=new TextPrompt("Ingrese su correo electrónico",txtCorreo);
-        TextPrompt a=new TextPrompt("Ingrese su contraseña",txtPass);
+        TextPrompt p = new TextPrompt("Ingrese su correo electrónico", txtCorreo);
+        TextPrompt a = new TextPrompt("Ingrese su contraseña", txtPass);
     }
 
     private Cliente extraerDatosFormulario() throws PersistenciaException {
@@ -75,6 +77,7 @@ public class inicio extends javax.swing.JFrame {
         txtPass = new javax.swing.JPasswordField();
         sep4 = new javax.swing.JSeparator();
         lblRegistrar1 = new javax.swing.JLabel();
+        cbxPass = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lulubank");
@@ -284,6 +287,17 @@ public class inicio extends javax.swing.JFrame {
         });
         jPanel1.add(lblRegistrar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 200, 169, 48));
 
+        cbxPass.setBackground(new java.awt.Color(102, 51, 255));
+        cbxPass.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cbxPass.setForeground(new java.awt.Color(255, 255, 255));
+        cbxPass.setText("Mostrar Contraseña");
+        cbxPass.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxPassItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(cbxPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 520, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 900, 720));
 
         pack();
@@ -408,6 +422,19 @@ public class inicio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_lblIniciarSesionMouseExited
 
+    private void cbxPassItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxPassItemStateChanged
+        cbxPass.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    txtPass.setEchoChar((char) 0);
+                } else {
+                    txtPass.setEchoChar('●');
+                };
+            }
+        });
+    }//GEN-LAST:event_cbxPassItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -447,6 +474,7 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JPanel btnIniciarSesion;
     private javax.swing.JPanel btnRegistrar;
     private javax.swing.JPanel btnSalir;
+    private javax.swing.JCheckBox cbxPass;
     private javax.swing.JPanel header;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblApellidoM1;
