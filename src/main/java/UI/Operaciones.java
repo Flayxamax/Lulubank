@@ -12,6 +12,8 @@ import Interfaces.ICuentasDAO;
 import Interfaces.IDireccionDAO;
 import Utils.Validadores;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,7 +21,7 @@ import javax.swing.JOptionPane;
  * @author ildex
  */
 public class Operaciones extends javax.swing.JFrame {
-    
+
     private final IClientesDAO clientesDAO;
     private final IDireccionDAO direccionDAO;
     private final ICuentasDAO cuentasDAO;
@@ -27,9 +29,10 @@ public class Operaciones extends javax.swing.JFrame {
     private final Validadores validadores = new Validadores();
     private int xMouse;
     private int yMouse;
-    
+
     /**
      * Creates new form Operaciones
+     *
      * @param clientesDAO
      * @param direccionDAO
      * @param correo
@@ -42,13 +45,13 @@ public class Operaciones extends javax.swing.JFrame {
         this.cuentasDAO = cuentasDAO;
         initComponents();
         Cliente clienteLogueado = this.clientesDAO.consultar(correo);
-        lblCliente.setText("Cliente: "+clienteLogueado.getNombre()+(" ")+clienteLogueado.getApellidoPaterno()+(" ")+clienteLogueado.getApellidoMaterno());
+        lblCliente.setText("Cliente: " + clienteLogueado.getNombre() + (" ") + clienteLogueado.getApellidoPaterno() + (" ") + clienteLogueado.getApellidoMaterno());
         System.out.println(clienteLogueado.getIdCliente());
         cbxCuentas.setVisible(false);
         btnCrear.setVisible(false);
     }
-    
-    public void crearCuenta(){
+
+    public void crearCuenta() {
         try {
             Cliente clienteLogueado = this.clientesDAO.consultar(correo);
             Cuenta cuentaCreada = this.cuentasDAO.insertar(clienteLogueado.getIdCliente());
@@ -57,11 +60,25 @@ public class Operaciones extends javax.swing.JFrame {
             this.mostrarMensajeErrorCuentaCreada();
         }
     }
-    
+
     private void mostrarMensajeErrorCuentaCreada() {
         JOptionPane.showMessageDialog(this, "No fue posible crear una cuenta", "Error", JOptionPane.ERROR_MESSAGE);
     }
-    
+
+    private Cuenta extraerDatosFrmDeposito() {
+        String idCuenta = this.txtCuenta.getText();
+        String deposito = this.txtSaldo.getText();
+        System.out.println(Double.parseDouble(deposito));
+        Cuenta cuenta = new Cuenta(Integer.parseInt(idCuenta), Double.parseDouble(deposito));
+        return cuenta;
+    }
+
+    private Cuenta depositar() throws PersistenciaException {
+        Cuenta cuenta = this.extraerDatosFrmDeposito();
+        Cuenta cuentaGuardada = this.cuentasDAO.actualizarMonto(cuenta.getIdCuenta(),cuenta.getSaldo());
+        return cuentaGuardada;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,12 +109,20 @@ public class Operaciones extends javax.swing.JFrame {
         barraTop = new javax.swing.JPanel();
         lblCliente = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        panelContenido = new javax.swing.JPanel();
-        lblKk = new javax.swing.JLabel();
+        panelDeposito = new javax.swing.JPanel();
+        txtCuenta = new javax.swing.JTextField();
+        lblKk1 = new javax.swing.JLabel();
+        lblCorreo = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
+        lblSaldo = new javax.swing.JLabel();
+        txtSaldo = new javax.swing.JTextField();
+        jSeparator6 = new javax.swing.JSeparator();
+        btnIniciarSesion = new javax.swing.JPanel();
+        lblDepositar = new javax.swing.JLabel();
         panelTransferencia = new javax.swing.JPanel();
         lblTitulo1 = new javax.swing.JLabel();
-        panelDeposito = new javax.swing.JPanel();
-        lblKk1 = new javax.swing.JLabel();
+        panelContenido = new javax.swing.JPanel();
+        lblKk = new javax.swing.JLabel();
         panelRetiro = new javax.swing.JPanel();
         lblKk2 = new javax.swing.JLabel();
         panelCuenta = new javax.swing.JPanel();
@@ -183,7 +208,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnRetiro.setBackground(new java.awt.Color(102, 102, 255));
-        btnRetiro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRetiro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblRetiro.setFont(new java.awt.Font("Franklin Gothic Book", 0, 20)); // NOI18N
         lblRetiro.setForeground(new java.awt.Color(255, 255, 255));
@@ -209,11 +234,11 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(btnRetiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 160, 50));
 
         btnDeposito.setBackground(new java.awt.Color(102, 102, 255));
-        btnDeposito.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDeposito.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblDeposito.setFont(new java.awt.Font("Franklin Gothic Book", 0, 20)); // NOI18N
         lblDeposito.setForeground(new java.awt.Color(255, 255, 255));
-        lblDeposito.setText("Deposito");
+        lblDeposito.setText("Depósito");
 
         javax.swing.GroupLayout btnDepositoLayout = new javax.swing.GroupLayout(btnDeposito);
         btnDeposito.setLayout(btnDepositoLayout);
@@ -235,7 +260,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(btnDeposito, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 160, 50));
 
         btnTransferencia.setBackground(new java.awt.Color(102, 102, 255));
-        btnTransferencia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnTransferencia.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblTransferencia.setFont(new java.awt.Font("Franklin Gothic Book", 0, 20)); // NOI18N
         lblTransferencia.setForeground(new java.awt.Color(255, 255, 255));
@@ -262,7 +287,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 140, 10));
 
         btnCuenta.setBackground(new java.awt.Color(102, 102, 255));
-        btnCuenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCuenta.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnCuenta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnCuentaMouseClicked(evt);
@@ -300,9 +325,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraTop.setBackground(new java.awt.Color(204, 204, 255));
 
         lblCliente.setFont(new java.awt.Font("Franklin Gothic Medium", 0, 24)); // NOI18N
-        lblCliente.setForeground(new java.awt.Color(0, 0, 0));
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Editar Cliente");
 
         javax.swing.GroupLayout barraTopLayout = new javax.swing.GroupLayout(barraTop);
@@ -328,10 +351,130 @@ public class Operaciones extends javax.swing.JFrame {
 
         getContentPane().add(barraTop, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 840, 120));
 
+        panelDeposito.setBackground(new java.awt.Color(255, 255, 255));
+
+        txtCuenta.setBorder(null);
+
+        lblKk1.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
+        lblKk1.setText("Depósito");
+
+        lblCorreo.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        lblCorreo.setText("Cuenta");
+
+        jSeparator5.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblSaldo.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        lblSaldo.setText("Saldo");
+
+        txtSaldo.setBorder(null);
+
+        jSeparator6.setForeground(new java.awt.Color(0, 0, 0));
+
+        btnIniciarSesion.setBackground(new java.awt.Color(51, 102, 255));
+        btnIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnIniciarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnIniciarSesionMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnIniciarSesionMouseExited(evt);
+            }
+        });
+
+        lblDepositar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        lblDepositar.setForeground(new java.awt.Color(255, 255, 255));
+        lblDepositar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblDepositar.setText("DEPOSITAAAR");
+        lblDepositar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblDepositarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblDepositarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblDepositarMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnIniciarSesionLayout = new javax.swing.GroupLayout(btnIniciarSesion);
+        btnIniciarSesion.setLayout(btnIniciarSesionLayout);
+        btnIniciarSesionLayout.setHorizontalGroup(
+            btnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(btnIniciarSesionLayout.createSequentialGroup()
+                .addComponent(lblDepositar, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 1, Short.MAX_VALUE))
+        );
+        btnIniciarSesionLayout.setVerticalGroup(
+            btnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblDepositar, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panelDepositoLayout = new javax.swing.GroupLayout(panelDeposito);
+        panelDeposito.setLayout(panelDepositoLayout);
+        panelDepositoLayout.setHorizontalGroup(
+            panelDepositoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelDepositoLayout.createSequentialGroup()
+                .addGroup(panelDepositoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelDepositoLayout.createSequentialGroup()
+                        .addGap(221, 221, 221)
+                        .addComponent(lblKk1))
+                    .addGroup(panelDepositoLayout.createSequentialGroup()
+                        .addGap(164, 164, 164)
+                        .addGroup(panelDepositoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelDepositoLayout.createSequentialGroup()
+                                .addGroup(panelDepositoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtCuenta)
+                                    .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panelDepositoLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblCorreo)))
+                                .addGap(94, 94, 94)
+                                .addGroup(panelDepositoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtSaldo)
+                                    .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panelDepositoLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblSaldo))))
+                            .addGroup(panelDepositoLayout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(224, Short.MAX_VALUE))
+        );
+        panelDepositoLayout.setVerticalGroup(
+            panelDepositoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelDepositoLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(lblKk1)
+                .addGap(127, 127, 127)
+                .addGroup(panelDepositoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDepositoLayout.createSequentialGroup()
+                        .addComponent(lblCorreo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDepositoLayout.createSequentialGroup()
+                        .addComponent(lblSaldo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(42, 42, 42)
+                .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(141, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(panelDeposito, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 680, 520));
+
+        panelTransferencia.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblTitulo1.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
+        lblTitulo1.setText("Transferencia");
+
         panelContenido.setBackground(new java.awt.Color(255, 255, 255));
 
         lblKk.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblKk.setForeground(new java.awt.Color(0, 0, 0));
         lblKk.setText("Contenido");
 
         javax.swing.GroupLayout panelContenidoLayout = new javax.swing.GroupLayout(panelContenido);
@@ -351,22 +494,16 @@ public class Operaciones extends javax.swing.JFrame {
                 .addContainerGap(412, Short.MAX_VALUE))
         );
 
-        getContentPane().add(panelContenido, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 680, 500));
-
-        panelTransferencia.setBackground(new java.awt.Color(255, 255, 255));
-
-        lblTitulo1.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblTitulo1.setForeground(new java.awt.Color(0, 0, 0));
-        lblTitulo1.setText("Transferencia");
-
         javax.swing.GroupLayout panelTransferenciaLayout = new javax.swing.GroupLayout(panelTransferencia);
         panelTransferencia.setLayout(panelTransferenciaLayout);
         panelTransferenciaLayout.setHorizontalGroup(
             panelTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTransferenciaLayout.createSequentialGroup()
-                .addGap(221, 221, 221)
+                .addContainerGap()
+                .addComponent(panelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTitulo1)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelTransferenciaLayout.setVerticalGroup(
             panelTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,39 +511,17 @@ public class Operaciones extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addComponent(lblTitulo1)
                 .addContainerGap(432, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTransferenciaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         getContentPane().add(panelTransferencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 680, 520));
 
-        panelDeposito.setBackground(new java.awt.Color(255, 255, 255));
-
-        lblKk1.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblKk1.setForeground(new java.awt.Color(0, 0, 0));
-        lblKk1.setText("Deposito");
-
-        javax.swing.GroupLayout panelDepositoLayout = new javax.swing.GroupLayout(panelDeposito);
-        panelDeposito.setLayout(panelDepositoLayout);
-        panelDepositoLayout.setHorizontalGroup(
-            panelDepositoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelDepositoLayout.createSequentialGroup()
-                .addGap(221, 221, 221)
-                .addComponent(lblKk1)
-                .addContainerGap(270, Short.MAX_VALUE))
-        );
-        panelDepositoLayout.setVerticalGroup(
-            panelDepositoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelDepositoLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(lblKk1)
-                .addContainerGap(432, Short.MAX_VALUE))
-        );
-
-        getContentPane().add(panelDeposito, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 680, 520));
-
         panelRetiro.setBackground(new java.awt.Color(255, 255, 255));
 
         lblKk2.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblKk2.setForeground(new java.awt.Color(0, 0, 0));
         lblKk2.setText("Retiro");
 
         javax.swing.GroupLayout panelRetiroLayout = new javax.swing.GroupLayout(panelRetiro);
@@ -432,7 +547,6 @@ public class Operaciones extends javax.swing.JFrame {
         panelCuenta.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
         lblTitulo.setText("Cuenta");
         panelCuenta.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(246, 12, -1, -1));
 
@@ -574,6 +688,36 @@ public class Operaciones extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnCrearMouseExited
 
+    private void lblDepositarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDepositarMouseClicked
+        if (!validadores.esVacia(txtCuenta.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo de correo vacío", "Error", 0);
+        } else if (!validadores.esVacia(txtSaldo.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo de contraseña vacío", "Error", 0);
+        } else {
+            try {
+                depositar();
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_lblDepositarMouseClicked
+
+    private void lblDepositarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDepositarMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblDepositarMouseEntered
+
+    private void lblDepositarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDepositarMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblDepositarMouseExited
+
+    private void btnIniciarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIniciarSesionMouseEntered
+
+    private void btnIniciarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIniciarSesionMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -615,6 +759,7 @@ public class Operaciones extends javax.swing.JFrame {
     private javax.swing.JPanel btnCrear;
     private javax.swing.JPanel btnCuenta;
     private javax.swing.JPanel btnDeposito;
+    private javax.swing.JPanel btnIniciarSesion;
     private javax.swing.JPanel btnRegresar;
     private javax.swing.JPanel btnRetiro;
     private javax.swing.JPanel btnSalir;
@@ -626,8 +771,12 @@ public class Operaciones extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JLabel lblCliente;
+    private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblCuenta;
+    private javax.swing.JLabel lblDepositar;
     private javax.swing.JLabel lblDeposito;
     private javax.swing.JLabel lblKk;
     private javax.swing.JLabel lblKk1;
@@ -635,6 +784,7 @@ public class Operaciones extends javax.swing.JFrame {
     private javax.swing.JLabel lblRegistrar;
     private javax.swing.JLabel lblRegresar;
     private javax.swing.JLabel lblRetiro;
+    private javax.swing.JLabel lblSaldo;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblTitulo1;
     private javax.swing.JLabel lblTransferencia;
@@ -644,5 +794,7 @@ public class Operaciones extends javax.swing.JFrame {
     private javax.swing.JPanel panelDeposito;
     private javax.swing.JPanel panelRetiro;
     private javax.swing.JPanel panelTransferencia;
+    private javax.swing.JTextField txtCuenta;
+    private javax.swing.JTextField txtSaldo;
     // End of variables declaration//GEN-END:variables
 }

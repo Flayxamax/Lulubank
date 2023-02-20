@@ -169,7 +169,7 @@ public class inicio extends javax.swing.JFrame {
             btnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btnIniciarSesionLayout.createSequentialGroup()
                 .addComponent(lblIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 1, Short.MAX_VALUE))
         );
         btnIniciarSesionLayout.setVerticalGroup(
             btnIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

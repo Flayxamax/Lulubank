@@ -37,6 +37,11 @@ public class Cuenta {
     public Cuenta(Integer idCuenta) {
         this.idCuenta = idCuenta;
     }
+    
+    public Cuenta(Integer idCuenta, Double saldo){
+        this.idCuenta = idCuenta;
+        this.saldo = saldo;
+    }
 
     public Integer getIdCuenta() {
         return idCuenta;

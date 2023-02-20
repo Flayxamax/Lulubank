@@ -41,6 +41,7 @@ UI\inicio$14.class
 UI\registrarCliente$6.class
 UI\registrarCliente$2.class
 UI\inicio.class
+UI\Operaciones$10.class
 UI\registrarCliente$17.class
 UI\Operaciones$3.class
 UI\registrarCliente$20.class
@@ -58,6 +59,7 @@ Utils\TextPrompt.class
 UI\Operaciones$6.class
 UI\registrarCliente$23.class
 UI\registrarCliente$11.class
+UI\Operaciones$9.class
 UI\Operaciones.class
 UI\registrarCliente$8.class
 UI\inicio$7.class

@@ -65,7 +65,23 @@ public class CuentasDAO implements ICuentasDAO {
 
     @Override
     public Cuenta consultar(Integer idCuenta) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Cuenta cuenta = new Cuenta();
+        String consulta = "SELECT id_cuenta, saldo, fecha_apertura, estado, id_cliente FROM cuentas WHERE id_cuenta = ?";
+        try (
+                Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(consulta);) {
+            comando.setInt(1, idCuenta);
+            ResultSet registro = comando.executeQuery();
+            if (registro.next()) {
+                cuenta.setIdCuenta(registro.getInt("id_cuenta"));
+                cuenta.setSaldo(registro.getDouble("saldo"));
+                cuenta.setFechaApertura(registro.getString("fecha_apertura"));
+                cuenta.setEstado(registro.getString("estado"));
+                cuenta.setIdCliente(registro.getInt("id_cliente"));
+            }
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, e.getMessage());
+        }
+        return cuenta;
     }
 
     @Override
@@ -85,7 +101,7 @@ public class CuentasDAO implements ICuentasDAO {
 
     @Override
     public void actualizarEstado(Cuenta cuenta) throws PersistenciaException {
-        String codigoSQL = "update cuentas set into estado = ? where id_cuenta = ?";
+        String codigoSQL = "update cuentas set estado = ? where id_cuenta = ?";
         try (
                 Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL, Statement.RETURN_GENERATED_KEYS);) {
@@ -100,19 +116,19 @@ public class CuentasDAO implements ICuentasDAO {
     }
 
     @Override
-    public void actualizarMonto(Cuenta cuenta) throws PersistenciaException {
-        String codigoSQL = "update cuentas set into saldo = ? where id_cuenta = ?";
+    public Cuenta actualizarMonto(Integer idCuenta, Double saldo) throws PersistenciaException {
+        String codigoSQL = "update cuentas set saldo=saldo+? where id_cuenta = ?";
         try (
                 Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL, Statement.RETURN_GENERATED_KEYS);) {
-            comando.setDouble(1, cuenta.getSaldo());
-            comando.executeUpdate();
-            LOG.log(Level.WARNING, "cuenta registrado, pero ID no fue registrado");
-            throw new PersistenciaException("cuenta registrado, pero ID no generado");
+            comando.setDouble(1, saldo);
+            comando.setInt(2,idCuenta);
+            comando.executeUpdate();           
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, e.getMessage());
-            throw new PersistenciaException("No fue posible registrar cuenta");
+            throw new PersistenciaException("No fue posible agregar saldo.");
         }
+        return null;
     }
     
     @Override
