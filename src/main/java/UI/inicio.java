@@ -7,6 +7,7 @@ package UI;
 import Dominio.Cliente;
 import Excepciones.PersistenciaException;
 import Interfaces.IClientesDAO;
+import Interfaces.ICuentasDAO;
 import Interfaces.IDireccionDAO;
 import Utils.TextPrompt;
 import Utils.Validadores;
@@ -25,6 +26,7 @@ public class inicio extends javax.swing.JFrame {
 
     private final IClientesDAO clientesDAO;
     private final IDireccionDAO direccionDAO;
+    private final ICuentasDAO cuentasDAO;
     private final Validadores validadores = new Validadores();
     private int xMouse;
     private int yMouse;
@@ -34,13 +36,16 @@ public class inicio extends javax.swing.JFrame {
      *
      * @param clientesDAO
      * @param direccionDAO
+     * @param cuentasDAO
      */
-    public inicio(IClientesDAO clientesDAO, IDireccionDAO direccionDAO) {
+    public inicio(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO) {
         initComponents();
         this.clientesDAO = clientesDAO;
         this.direccionDAO = direccionDAO;
+        this.cuentasDAO = cuentasDAO;
         TextPrompt p = new TextPrompt("Ingrese su correo electrónico", txtCorreo);
         TextPrompt a = new TextPrompt("Ingrese su contraseña", txtPass);
+        
     }
 
     private Cliente extraerDatosFormulario() throws PersistenciaException {
@@ -371,7 +376,7 @@ public class inicio extends javax.swing.JFrame {
 
     private void lblRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseClicked
         // TODO add your handling code here:
-        registrarCliente rc = new registrarCliente(clientesDAO, direccionDAO);
+        registrarCliente rc = new registrarCliente(clientesDAO, direccionDAO, cuentasDAO);
         rc.setVisible(true);
         dispose();
     }//GEN-LAST:event_lblRegistrarMouseClicked
@@ -406,7 +411,9 @@ public class inicio extends javax.swing.JFrame {
                 Cliente cliente = this.extraerDatosFormulario();
                 Cliente clienteLogin = this.clientesDAO.consultar(cliente.getCorreo());
                 if (txtPass.getText().equals(clienteLogin.getPassword())) {
-                    System.out.println("niqqa");
+                    Operaciones op = new Operaciones(clientesDAO, direccionDAO, txtCorreo.getText(), cuentasDAO);
+                    op.setVisible(true);
+                    dispose();
                 }
             } catch (PersistenciaException ex) {
                 Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);

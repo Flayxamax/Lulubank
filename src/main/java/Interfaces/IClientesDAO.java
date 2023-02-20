@@ -6,8 +6,7 @@ package Interfaces;
 
 import Dominio.Cliente;
 import Excepciones.PersistenciaException;
-import Utils.ConfiguracionPaginado;
-import java.util.List;
+
 
 /**
  *
@@ -17,5 +16,4 @@ public interface IClientesDAO {
     Cliente consultar(String correo) throws PersistenciaException;
     Cliente insertar (Cliente cliente) throws PersistenciaException;
 //    Cliente eliminar (Integer idCliente) throws PersistenciaException;
-    List<Cliente> consultarLista(ConfiguracionPaginado configPaginado) throws PersistenciaException;
 }

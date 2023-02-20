@@ -8,6 +8,7 @@ import Dominio.Cliente;
 import Dominio.Direccion;
 import Excepciones.PersistenciaException;
 import Interfaces.IClientesDAO;
+import Interfaces.ICuentasDAO;
 import Interfaces.IDireccionDAO;
 import Utils.ConfiguracionPaginado;
 import Utils.TextPrompt;
@@ -30,6 +31,7 @@ public class registrarCliente extends javax.swing.JFrame {
     private static final Logger LOG = Logger.getLogger(ClientesDAO.class.getName());
     private final IClientesDAO clientesDAO;
     private final IDireccionDAO direccionDAO;
+    private final ICuentasDAO cuentasDAO;
     private ConfiguracionPaginado configPaginado;
     private final Validadores validadores = new Validadores();
     private int xMouse;
@@ -40,10 +42,12 @@ public class registrarCliente extends javax.swing.JFrame {
      *
      * @param clientesDAO
      * @param direccionDAO
+     * @param cuentasDAO
      */
-    public registrarCliente(IClientesDAO clientesDAO, IDireccionDAO direccionDAO) {
+    public registrarCliente(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO) {
         this.clientesDAO = clientesDAO;
         this.direccionDAO = direccionDAO;
+        this.cuentasDAO = cuentasDAO;
         initComponents();
         LocalDate fechaActual = LocalDate.now();
         LocalDate minFecha = LocalDate.of(1900, 01, 01);
@@ -172,19 +176,17 @@ public class registrarCliente extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblFecha.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        lblFecha.setForeground(new java.awt.Color(0, 0, 0));
         lblFecha.setText("Fecha de nacimiento");
         jPanel1.add(lblFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 110, -1, -1));
 
         lblCorreo.setText("Correo");
         lblCorreo.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        lblCorreo.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(lblCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 350, -1, -1));
 
         txtCorreo.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtCorreo.setText("Ingrese su correo electronico");
         txtCorreo.setBorder(null);
-        txtCorreo.setForeground(new java.awt.Color(204, 204, 204));
+        txtCorreo.setForeground(new java.awt.Color(0, 0, 0));
+        txtCorreo.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtCorreoMousePressed(evt);
@@ -198,19 +200,17 @@ public class registrarCliente extends javax.swing.JFrame {
         jPanel1.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 380, 330, -1));
 
         lblSub.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        lblSub.setForeground(new java.awt.Color(0, 0, 0));
         lblSub.setText("-- Información personal --");
         jPanel1.add(lblSub, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, -1, -1));
 
         lblNombre.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        lblNombre.setForeground(new java.awt.Color(0, 0, 0));
         lblNombre.setText("Nombre");
         jPanel1.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 110, -1, -1));
 
         txtNombre.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtNombre.setText("Ingrese su nombre");
         txtNombre.setBorder(null);
-        txtNombre.setForeground(new java.awt.Color(204, 204, 204));
+        txtNombre.setForeground(new java.awt.Color(0, 0, 0));
+        txtNombre.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtNombre.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtNombreMousePressed(evt);
@@ -229,9 +229,9 @@ public class registrarCliente extends javax.swing.JFrame {
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, 330, -1));
 
         txtApellidoP.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtApellidoP.setText("Ingrese su apellido paterno");
         txtApellidoP.setBorder(null);
-        txtApellidoP.setForeground(new java.awt.Color(204, 204, 204));
+        txtApellidoP.setForeground(new java.awt.Color(0, 0, 0));
+        txtApellidoP.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtApellidoP.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtApellidoPMousePressed(evt);
@@ -245,19 +245,17 @@ public class registrarCliente extends javax.swing.JFrame {
         jPanel1.add(txtApellidoP, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, 330, -1));
 
         lblApellidop.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        lblApellidop.setForeground(new java.awt.Color(0, 0, 0));
         lblApellidop.setText("Apellido paterno");
         jPanel1.add(lblApellidop, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 190, -1, -1));
 
         lblApellidoM.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        lblApellidoM.setForeground(new java.awt.Color(0, 0, 0));
         lblApellidoM.setText("Apellido materno");
         jPanel1.add(lblApellidoM, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, -1, -1));
 
         txtApellidoM.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtApellidoM.setText("Ingrese su apellido materno");
         txtApellidoM.setBorder(null);
-        txtApellidoM.setForeground(new java.awt.Color(204, 204, 204));
+        txtApellidoM.setForeground(new java.awt.Color(0, 0, 0));
+        txtApellidoM.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtApellidoM.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtApellidoMMousePressed(evt);
@@ -271,9 +269,9 @@ public class registrarCliente extends javax.swing.JFrame {
         jPanel1.add(txtApellidoM, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 300, 330, -1));
 
         txtPass.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtPass.setText("contraseña");
         txtPass.setBorder(null);
-        txtPass.setForeground(new java.awt.Color(204, 204, 204));
+        txtPass.setForeground(new java.awt.Color(0, 0, 0));
+        txtPass.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtPassMousePressed(evt);
@@ -288,23 +286,20 @@ public class registrarCliente extends javax.swing.JFrame {
 
         lblApellidoM1.setText("Contraseña");
         lblApellidoM1.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        lblApellidoM1.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(lblApellidoM1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 430, -1, -1));
 
         lblSub2.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        lblSub2.setForeground(new java.awt.Color(0, 0, 0));
         lblSub2.setText("-- Domicilio --");
         jPanel1.add(lblSub2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 500, -1, -1));
 
         lblCalle.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        lblCalle.setForeground(new java.awt.Color(0, 0, 0));
         lblCalle.setText("Calle");
         jPanel1.add(lblCalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 520, -1, -1));
 
         txtCalle.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtCalle.setForeground(new java.awt.Color(204, 204, 204));
-        txtCalle.setText("Ingrese su calle");
         txtCalle.setBorder(null);
+        txtCalle.setForeground(new java.awt.Color(0, 0, 0));
+        txtCalle.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtCalle.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtCalleMousePressed(evt);
@@ -318,9 +313,9 @@ public class registrarCliente extends javax.swing.JFrame {
         jPanel1.add(txtCalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 550, 330, -1));
 
         txtColonia.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtColonia.setForeground(new java.awt.Color(204, 204, 204));
-        txtColonia.setText("Ingrese su colonia");
         txtColonia.setBorder(null);
+        txtColonia.setForeground(new java.awt.Color(0, 0, 0));
+        txtColonia.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtColonia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtColoniaMousePressed(evt);
@@ -334,19 +329,17 @@ public class registrarCliente extends javax.swing.JFrame {
         jPanel1.add(txtColonia, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 630, 330, -1));
 
         lblColonia.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        lblColonia.setForeground(new java.awt.Color(0, 0, 0));
         lblColonia.setText("Colonia");
         jPanel1.add(lblColonia, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 600, -1, -1));
 
         lblNumCasa.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
-        lblNumCasa.setForeground(new java.awt.Color(0, 0, 0));
         lblNumCasa.setText("Número casa");
         jPanel1.add(lblNumCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 680, -1, -1));
 
         txtNumCasa.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
-        txtNumCasa.setForeground(new java.awt.Color(204, 204, 204));
-        txtNumCasa.setText("Ingrese su número de casa");
         txtNumCasa.setBorder(null);
+        txtNumCasa.setForeground(new java.awt.Color(0, 0, 0));
+        txtNumCasa.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtNumCasa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtNumCasaMousePressed(evt);
@@ -360,7 +353,6 @@ public class registrarCliente extends javax.swing.JFrame {
         jPanel1.add(txtNumCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 710, 330, -1));
 
         lblTitulo.setFont(new java.awt.Font("Franklin Gothic Medium Cond", 1, 36)); // NOI18N
-        lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
         lblTitulo.setText("Registrar cliente");
         jPanel1.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 40, -1, -1));
         jPanel1.add(sep8, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 370, 230, 10));
@@ -377,7 +369,7 @@ public class registrarCliente extends javax.swing.JFrame {
         jPanel1.add(calendar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 150, -1, -1));
 
         btnRegistrar.setBackground(new java.awt.Color(51, 102, 255));
-        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnRegistrarMouseEntered(evt);
@@ -389,6 +381,7 @@ public class registrarCliente extends javax.swing.JFrame {
 
         lblRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRegistrar.setText("REGISTRAR");
+        lblRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRegistrar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         lblRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         lblRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -429,7 +422,7 @@ public class registrarCliente extends javax.swing.JFrame {
             }
         });
 
-        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnRegresarMouseClicked(evt);
@@ -451,7 +444,7 @@ public class registrarCliente extends javax.swing.JFrame {
         });
         btnRegresar.add(lblRegresar);
 
-        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnSalirMouseClicked(evt);
@@ -554,72 +547,34 @@ public class registrarCliente extends javax.swing.JFrame {
 
     private void txtNombreMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNombreMousePressed
         // TODO add your handling code here:
-        if (txtNombre.getText().equals("Ingrese su nombre")) {
-            txtNombre.setText("");
-            txtNombre.setForeground(Color.black);
-        }
-//        if (String.valueOf(txtPass.getPassword()).isEmpty()) {
-//            txtPass.setText("contraseña");
-//            txtPass.setForeground(Color.gray);
-//        }
-
-
     }//GEN-LAST:event_txtNombreMousePressed
 
     private void txtApellidoPMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtApellidoPMousePressed
-        // TODO add your handling code here:
-        if (txtApellidoP.getText().equals("Ingrese su apellido paterno")) {
-            txtApellidoP.setText("");
-            txtApellidoP.setForeground(Color.black);
-        }
+
     }//GEN-LAST:event_txtApellidoPMousePressed
 
     private void txtApellidoMMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtApellidoMMousePressed
-        // TODO add your handling code here:
-        if (txtApellidoM.getText().equals("Ingrese su apellido materno")) {
-            txtApellidoM.setText("");
-            txtApellidoM.setForeground(Color.black);
-        }
+
     }//GEN-LAST:event_txtApellidoMMousePressed
 
     private void txtCorreoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMousePressed
-        // TODO add your handling code here:
-        if (txtCorreo.getText().equals("Ingrese su correo electronico")) {
-            txtCorreo.setText("");
-            txtCorreo.setForeground(Color.black);
-        }
+
     }//GEN-LAST:event_txtCorreoMousePressed
 
     private void txtPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPassMousePressed
-        // TODO add your handling code here:
-        if (String.valueOf(txtPass.getPassword()).equals("contraseña")) {
-            txtPass.setText("");
-            txtPass.setForeground(Color.black);
-        }
+
     }//GEN-LAST:event_txtPassMousePressed
 
     private void txtCalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCalleMousePressed
-        // TODO add your handling code here:
-        if (txtCalle.getText().equals("Ingrese su calle")) {
-            txtCalle.setText("");
-            txtCalle.setForeground(Color.black);
-        }
+
     }//GEN-LAST:event_txtCalleMousePressed
 
     private void txtColoniaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtColoniaMousePressed
-        // TODO add your handling code here:
-        if (txtColonia.getText().equals("Ingrese su colonia")) {
-            txtColonia.setText("");
-            txtColonia.setForeground(Color.black);
-        }
+
     }//GEN-LAST:event_txtColoniaMousePressed
 
     private void txtNumCasaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNumCasaMousePressed
-        // TODO add your handling code here:
-        if (txtNumCasa.getText().equals("Ingrese su número de casa")) {
-            txtNumCasa.setText("");
-            txtNumCasa.setForeground(Color.black);
-        }
+
     }//GEN-LAST:event_txtNumCasaMousePressed
 
     private void lblRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseClicked
@@ -690,7 +645,7 @@ public class registrarCliente extends javax.swing.JFrame {
 
     private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
         // TODO add your handling code here:
-        inicio in = new inicio(clientesDAO, direccionDAO);
+        inicio in = new inicio(clientesDAO, direccionDAO, cuentasDAO);
         in.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnRegresarMouseClicked
