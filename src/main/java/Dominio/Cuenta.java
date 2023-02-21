@@ -42,6 +42,12 @@ public class Cuenta {
         this.idCuenta = idCuenta;
         this.saldo = saldo;
     }
+    
+    public Cuenta(Double saldo, String fechaApertura, String estado){
+        this.saldo = saldo;
+        this.fechaApertura = fechaApertura;
+        this.estado = estado;
+    }
 
     public Integer getIdCuenta() {
         return idCuenta;

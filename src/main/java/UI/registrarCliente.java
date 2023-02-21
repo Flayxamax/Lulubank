@@ -10,6 +10,7 @@ import Excepciones.PersistenciaException;
 import Interfaces.IClientesDAO;
 import Interfaces.ICuentasDAO;
 import Interfaces.IDireccionDAO;
+import Interfaces.ITransferenciasDAO;
 import Utils.ConfiguracionPaginado;
 import Utils.TextPrompt;
 import Utils.Validadores;
@@ -32,6 +33,7 @@ public class registrarCliente extends javax.swing.JFrame {
     private final IClientesDAO clientesDAO;
     private final IDireccionDAO direccionDAO;
     private final ICuentasDAO cuentasDAO;
+    private final ITransferenciasDAO transferenciasDAO;
     private ConfiguracionPaginado configPaginado;
     private final Validadores validadores = new Validadores();
     private int xMouse;
@@ -44,10 +46,11 @@ public class registrarCliente extends javax.swing.JFrame {
      * @param direccionDAO
      * @param cuentasDAO
      */
-    public registrarCliente(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO) {
+    public registrarCliente(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO, ITransferenciasDAO transferenciasDAO) {
         this.clientesDAO = clientesDAO;
         this.direccionDAO = direccionDAO;
         this.cuentasDAO = cuentasDAO;
+        this.transferenciasDAO = transferenciasDAO;
         initComponents();
         LocalDate fechaActual = LocalDate.now();
         LocalDate minFecha = LocalDate.of(1900, 01, 01);
@@ -645,7 +648,7 @@ public class registrarCliente extends javax.swing.JFrame {
 
     private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
         // TODO add your handling code here:
-        inicio in = new inicio(clientesDAO, direccionDAO, cuentasDAO);
+        inicio in = new inicio(clientesDAO, direccionDAO, cuentasDAO, transferenciasDAO);
         in.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnRegresarMouseClicked

@@ -17,7 +17,8 @@ public interface ICuentasDAO {
     Cuenta consultar(Integer idCuenta) throws PersistenciaException;
     Cuenta insertar(Integer idCliente) throws PersistenciaException;
     List<Cuenta> consultarLista(ConfiguracionPaginado configPaginado) throws PersistenciaException;
-    void actualizarEstado(Cuenta idCuenta) throws PersistenciaException;
+    void actualizarEstado(Integer idCuenta) throws PersistenciaException;
     Cuenta actualizarMonto(Integer idCuenta, Double saldo) throws PersistenciaException;
-    List<Cuenta> consultarCuentas(Integer idCliente) throws PersistenciaException;
+    public int[] consultarIdsCuentas(Integer idCliente) throws PersistenciaException;
+    List<Cuenta> consultarListaC(Integer idCuenta) throws PersistenciaException;
 }

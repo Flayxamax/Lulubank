@@ -88,4 +88,20 @@ public class ClientesDAO implements IClientesDAO {
             throw new PersistenciaException("No fue posible registrar cliente");
         }
     }
+
+    @Override
+    public void actualizar(Cliente cliente) throws PersistenciaException {
+        String codigoSQL = "update cliente set nombre = ?, apellido_paterno = ?, apellido_materno = ?, fecha_nacimiento = ?, edad = ?, correo = ?, contrasena = ?, id_direccion = ? where id_cuenta = ?";
+        try (
+                Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                codigoSQL, Statement.RETURN_GENERATED_KEYS);) {
+            comando.setString(1, cliente.getNombre());
+            comando.setString(2, cliente.getApellidoPaterno());
+            comando.setString(3, cliente.getApellidoMaterno());
+            comando.executeUpdate();
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, e.getMessage());
+            throw new PersistenciaException("No fue posible cambiar el estado a la cuenta");
+        }
+    }
 }
