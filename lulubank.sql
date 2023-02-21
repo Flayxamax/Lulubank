@@ -83,3 +83,79 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+/*
+CREATE DEFINER=`root`@`localhost` PROCEDURE `transferencia`(IN manda INT, IN recibe INT, IN montoT decimal(10, 2))
+BEGIN
+
+START TRANSACTION;
+
+COMMIT;
+
+-- Obtenemos el saldo actual de la cuenta
+SELECT @saldo_actual := saldo FROM cuentas WHERE id_cuenta = manda;
+
+-- Si tiene los fondos suficientes, se realiza
+IF @saldo_actual >= montoT THEN
+  UPDATE cuentas SET saldo = saldo - montoT WHERE id_cuenta = manda;
+  UPDATE cuentas SET saldo = saldo + montoT WHERE id_cuenta = recibe;
+END IF;
+
+-- Si algo falla, deshacemos la transacción
+IF @saldo_actual < montoT THEN
+  ROLLBACK;
+ELSE
+  COMMIT;
+END IF;
+
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `transferencia`(IN manda INT, IN recibe INT, IN montoT decimal(10, 2))
+BEGIN
+
+START TRANSACTION;
+
+COMMIT;
+
+-- Obtenemos el saldo actual de la cuenta
+SELECT @saldo_actual := saldo FROM cuentas WHERE id_cuenta = manda;
+
+-- Si tiene los fondos suficientes, se realiza
+IF @saldo_actual >= montoT THEN
+  UPDATE cuentas SET saldo = saldo - montoT WHERE id_cuenta = manda;
+  UPDATE cuentas SET saldo = saldo + montoT WHERE id_cuenta = recibe;
+END IF;
+
+-- Si algo falla, deshacemos la transacción
+IF @saldo_actual < montoT THEN
+  ROLLBACK;
+ELSE
+  COMMIT;
+END IF;
+
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `retiro`(IN folio INT, IN manda INT, IN montoT decimal(10, 2))
+BEGIN
+
+START TRANSACTION;
+
+COMMIT;
+
+-- Obtenemos el saldo actual de la cuenta
+SELECT @saldo_actual := saldo FROM cuentas WHERE id_cuenta = manda;
+
+-- Si tiene los fondos suficientes, se realiza
+IF @saldo_actual >= montoT THEN
+  INSERT INTO retiros (folio, monto, id_cuenta) VALUES (folio, montoT,manda);
+END IF;
+
+-- Si algo falla, deshacemos la transacción
+IF @saldo_actual < montoT THEN
+  ROLLBACK;
+ELSE
+  COMMIT;
+END IF;
+
+END
+*/
