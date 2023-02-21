@@ -7,12 +7,14 @@ import Interfaces.IClientesDAO;
 import Interfaces.IConexionBD;
 import Interfaces.ICuentasDAO;
 import Interfaces.IDireccionDAO;
+import Interfaces.IRetirosDAO;
 import Interfaces.ITransferenciasDAO;
 import UI.inicio;
 import implementaciones.ClientesDAO;
 import implementaciones.ConexionBD;
 import implementaciones.CuentasDAO;
 import implementaciones.DireccionDAO;
+import implementaciones.RetirosDAO;
 import implementaciones.TransferenciasDAO;
 import java.util.logging.Logger;
 
@@ -32,6 +34,7 @@ public class Lulubank {
         IDireccionDAO direccionDAO = new DireccionDAO(generadorConexiones);
         ICuentasDAO cuentasDAO = new CuentasDAO(generadorConexiones);
         ITransferenciasDAO transferenciasDAO = new TransferenciasDAO(generadorConexiones);
-        new inicio(clientesDAO, direccionDAO, cuentasDAO, transferenciasDAO).setVisible(true);
+        IRetirosDAO retirosDAO = new RetirosDAO(generadorConexiones);
+        new inicio(clientesDAO, direccionDAO, cuentasDAO, transferenciasDAO, retirosDAO).setVisible(true);
     }
 }

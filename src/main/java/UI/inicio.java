@@ -9,6 +9,7 @@ import Excepciones.PersistenciaException;
 import Interfaces.IClientesDAO;
 import Interfaces.ICuentasDAO;
 import Interfaces.IDireccionDAO;
+import Interfaces.IRetirosDAO;
 import Interfaces.ITransferenciasDAO;
 import Utils.TextPrompt;
 import Utils.Validadores;
@@ -29,6 +30,7 @@ public class inicio extends javax.swing.JFrame {
     private final IDireccionDAO direccionDAO;
     private final ICuentasDAO cuentasDAO;
     private final ITransferenciasDAO transferenciasDAO;
+    private final IRetirosDAO retirosDAO;
     private final Validadores validadores = new Validadores();
     private int xMouse;
     private int yMouse;
@@ -39,13 +41,15 @@ public class inicio extends javax.swing.JFrame {
      * @param clientesDAO
      * @param direccionDAO
      * @param cuentasDAO
+     * @param transferenciasDAO
      */
-    public inicio(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO, ITransferenciasDAO transferenciasDAO) {
+    public inicio(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO, ITransferenciasDAO transferenciasDAO, IRetirosDAO retirosDAO) {
         initComponents();
         this.clientesDAO = clientesDAO;
         this.direccionDAO = direccionDAO;
         this.cuentasDAO = cuentasDAO;
         this.transferenciasDAO = transferenciasDAO;
+        this.retirosDAO = retirosDAO;
         TextPrompt p = new TextPrompt("Ingrese su correo electrónico", txtCorreo);
         TextPrompt a = new TextPrompt("Ingrese su contraseña", txtPass);
         
@@ -153,7 +157,7 @@ public class inicio extends javax.swing.JFrame {
         lblIniciar.setForeground(new java.awt.Color(255, 255, 255));
         lblIniciar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblIniciar.setText("INICIAR SESION");
-        lblIniciar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblIniciar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblIniciar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblIniciarMouseClicked(evt);
@@ -196,7 +200,7 @@ public class inicio extends javax.swing.JFrame {
         lblRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         lblRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRegistrar.setText("REGISTRARSE");
-        lblRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblRegistrarMouseClicked(evt);
@@ -224,8 +228,13 @@ public class inicio extends javax.swing.JFrame {
 
         jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 130, 170, 60));
 
-        lblInvitado.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel1.add(lblInvitado, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 210, 60, 10));
+        lblInvitado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblInvitado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblInvitadoMouseClicked(evt);
+            }
+        });
+        jPanel1.add(lblInvitado, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 200, 70, 20));
 
         lblLogo.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.png"))); // NOI18N
@@ -355,7 +364,7 @@ public class inicio extends javax.swing.JFrame {
 
     private void lblRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseClicked
         // TODO add your handling code here:
-        registrarCliente rc = new registrarCliente(clientesDAO, direccionDAO, cuentasDAO, transferenciasDAO);
+        registrarCliente rc = new registrarCliente(clientesDAO, direccionDAO, cuentasDAO, transferenciasDAO, retirosDAO);
         rc.setVisible(true);
         dispose();
     }//GEN-LAST:event_lblRegistrarMouseClicked
@@ -378,9 +387,11 @@ public class inicio extends javax.swing.JFrame {
                 Cliente cliente = this.extraerDatosFormulario();
                 Cliente clienteLogin = this.clientesDAO.consultar(cliente.getCorreo());
                 if (txtPass.getText().equals(clienteLogin.getPassword())) {
-                    Operaciones op = new Operaciones(clientesDAO, direccionDAO, txtCorreo.getText(), cuentasDAO, transferenciasDAO);
+                    Operaciones op = new Operaciones(clientesDAO, direccionDAO, txtCorreo.getText(), cuentasDAO, transferenciasDAO, retirosDAO);
                     op.setVisible(true);
                     dispose();
+                }else{
+                    JOptionPane.showMessageDialog(this, "Datos erroneos, intenta de nuevo.", "Error", 0);
                 }
             } catch (PersistenciaException ex) {
                 Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
@@ -418,6 +429,18 @@ public class inicio extends javax.swing.JFrame {
     private void txtPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPassMousePressed
 
     }//GEN-LAST:event_txtPassMousePressed
+
+    private void lblInvitadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblInvitadoMouseClicked
+        try {
+            String correo =null;
+            // TODO add your handling code here:
+            retiroSinCliente inv = new retiroSinCliente(clientesDAO, direccionDAO, correo, cuentasDAO, transferenciasDAO, retirosDAO);
+            inv.setVisible(true);
+            dispose();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_lblInvitadoMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel btnIniciar;

@@ -13,4 +13,6 @@ import Excepciones.PersistenciaException;
  */
 public interface IDireccionDAO {
     Direccion insertar (Direccion direccion) throws PersistenciaException;
+    Direccion consultar (Integer idCliente) throws PersistenciaException;
+    Direccion actualizar (Direccion direccion, Integer idDireccion) throws PersistenciaException;
 }

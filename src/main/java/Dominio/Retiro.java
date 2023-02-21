@@ -19,16 +19,16 @@ public class Retiro {
     private String fecha_operacion;
     private Double monto;
     private int idCuenta;
-    
+
     /**
-     * 
+     *
      * @param folio
      * @param contrasena
      * @param estado
      * @param fecha_creacion
      * @param fecha_operacion
      * @param monto
-     * @param idCuenta 
+     * @param idCuenta
      */
     public Retiro(Integer folio, String contrasena, String estado, String fecha_creacion, String fecha_operacion, Double monto, int idCuenta) {
         this.folio = folio;
@@ -49,7 +49,21 @@ public class Retiro {
         this.idCuenta = idCuenta;
     }
 
+    public Retiro(Integer folio, String contrasena) {
+        this.folio = folio;
+        this.contrasena = contrasena;
+    }
+
     public Retiro() {
+    }
+
+    public Retiro(Integer folio, String estado, String fecha_creacion, String fecha_operacion, Double monto, int idCuenta) {
+        this.folio = folio;
+        this.estado = estado;
+        this.fecha_creacion = fecha_creacion;
+        this.fecha_operacion = fecha_operacion;
+        this.monto = monto;
+        this.idCuenta = idCuenta;
     }
 
     public Integer getFolio() {

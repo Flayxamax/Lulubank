@@ -15,10 +15,22 @@ public class Cuenta {
     private String fechaApertura;
     private String estado;
     private Integer idCliente;
-
+    
+    /**
+     * Constructor vacío que no recibe ningún parámetro.
+     */
     public Cuenta() {
     }
-
+    
+    /**
+     * Constructor que recibe los valores de idCuenta, saldo, fechaApertura, estado e idCliente.
+     * 
+     * @param idCuenta id Cuenta
+     * @param saldo saldo
+     * @param fechaApertura fecha de apertura
+     * @param estado Estado
+     * @param idCliente id_cliente
+     */
     public Cuenta(Integer idCuenta, Double saldo, String fechaApertura, String estado, Integer idCliente) {
         this.idCuenta = idCuenta;
         this.saldo = saldo;
@@ -26,14 +38,27 @@ public class Cuenta {
         this.estado = estado;
         this.idCliente = idCliente;
     }
-
+    
+    /**
+     * Constructor que recibe los valores de saldo, fechaApertura, estado e idCliente.
+     * 
+     * @param saldo saldo
+     * @param fechaApertura fecha de apertura
+     * @param estado Estado
+     * @param idCliente id_cliente
+     */
     public Cuenta(Double saldo, String fechaApertura, String estado, Integer idCliente) {
         this.saldo = saldo;
         this.fechaApertura = fechaApertura;
         this.estado = estado;
         this.idCliente = idCliente;
     }
-
+    
+    /**
+     * 
+     * 
+     * @param idCuenta 
+     */
     public Cuenta(Integer idCuenta) {
         this.idCuenta = idCuenta;
     }

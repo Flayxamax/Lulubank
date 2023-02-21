@@ -15,5 +15,5 @@ import Excepciones.PersistenciaException;
 public interface IClientesDAO {
     Cliente consultar(String correo) throws PersistenciaException;
     Cliente insertar (Cliente cliente) throws PersistenciaException;
-    void actualizar (Cliente cliente) throws PersistenciaException;
+    Cliente actualizar (Cliente cliente, Integer idCliente) throws PersistenciaException;
 }

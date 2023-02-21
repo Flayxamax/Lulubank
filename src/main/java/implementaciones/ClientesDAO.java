@@ -90,18 +90,25 @@ public class ClientesDAO implements IClientesDAO {
     }
 
     @Override
-    public void actualizar(Cliente cliente) throws PersistenciaException {
-        String codigoSQL = "update cliente set nombre = ?, apellido_paterno = ?, apellido_materno = ?, fecha_nacimiento = ?, edad = ?, correo = ?, contrasena = ?, id_direccion = ? where id_cuenta = ?";
+    public Cliente actualizar(Cliente cliente, Integer idCliente) throws PersistenciaException {
+        String codigoSQL = "update clientes set nombre = ?, apellido_paterno = ?, apellido_materno = ?, fecha_nacimiento = ?, edad = ?, correo = ?, contrasena = aes_encrypt(?, 'hunter2'), id_direccion = ? where id_cliente = ?";
         try (
                 Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
                 codigoSQL, Statement.RETURN_GENERATED_KEYS);) {
             comando.setString(1, cliente.getNombre());
             comando.setString(2, cliente.getApellidoPaterno());
             comando.setString(3, cliente.getApellidoMaterno());
+            comando.setString(4, cliente.getFechaNacimiento());
+            comando.setInt(5, cliente.getEdad());
+            comando.setString(6, cliente.getCorreo());
+            comando.setString(7, cliente.getPassword());
+            comando.setInt(8, idCliente);
+            comando.setInt(9, idCliente);
             comando.executeUpdate();
+            return cliente;
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, e.getMessage());
-            throw new PersistenciaException("No fue posible cambiar el estado a la cuenta");
+            throw new PersistenciaException("No fue posible actualizar la cuenta");
         }
     }
 }

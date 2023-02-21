@@ -24,7 +24,7 @@ public class DireccionDAO implements IDireccionDAO {
 
     private static final Logger LOG = Logger.getLogger(ClientesDAO.class.getName());
     private final IConexionBD GENERADOR_CONEXIONES;
-    
+
     public DireccionDAO(IConexionBD generadorConexiones) {
         this.GENERADOR_CONEXIONES = generadorConexiones;
     }
@@ -54,4 +54,41 @@ public class DireccionDAO implements IDireccionDAO {
         }
     }
 
+    @Override
+    public Direccion consultar(Integer idCliente) throws PersistenciaException {
+        Direccion direccion = new Direccion();
+        String consulta = "SELECT id_direccion, calle, colonia, numero FROM direcciones WHERE id_direccion = ?";
+        try (
+                Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(consulta);) {
+            comando.setInt(1, idCliente);
+            ResultSet registro = comando.executeQuery();
+            if (registro.next()) {
+                direccion.setIdDireccion(registro.getInt("id_direccion"));
+                direccion.setCalle(registro.getString("calle"));
+                direccion.setColonia(registro.getString("colonia"));
+                direccion.setNumCasa(registro.getString("numero"));
+            }
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, e.getMessage());
+        }
+        return direccion;
+    }
+
+    @Override
+    public Direccion actualizar(Direccion direccion, Integer idDireccion) throws PersistenciaException {
+        String codigoSQL = "update direcciones set calle = ?, colonia = ?, numero = ? where id_direccion = ?";
+        try (
+                Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                codigoSQL, Statement.RETURN_GENERATED_KEYS);) {
+            comando.setString(1, direccion.getCalle());
+            comando.setString(2, direccion.getColonia());
+            comando.setString(3, direccion.getNumCasa());
+            comando.setInt(4, idDireccion);
+            comando.executeUpdate();
+            return direccion;
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, e.getMessage());
+            throw new PersistenciaException("No fue actualizar la dirección");
+        }
+    }
 }

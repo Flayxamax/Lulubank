@@ -8,6 +8,7 @@ import Dominio.Transferencia;
 import Excepciones.PersistenciaException;
 import Interfaces.IConexionBD;
 import Interfaces.ITransferenciasDAO;
+import Utils.ConfiguracionPaginado;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -66,7 +67,7 @@ public class TransferenciasDAO implements ITransferenciasDAO {
             comando.setDouble(2, monto);
             comando.setInt(3, idCuentaDestinatario);
             comando.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Se hizo la transferencia correctamente", "LuluAdmin", 1);
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al hacer la transfencia", "LuluAdmin", 0);
             LOG.log(Level.SEVERE, e.getMessage());
@@ -86,6 +87,38 @@ public class TransferenciasDAO implements ITransferenciasDAO {
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, e.getMessage());
             throw new PersistenciaException("No fue posible registrar transferencia");
+        }
+    }
+
+    @Override
+    public List<Transferencia> consultarLista(ConfiguracionPaginado configPaginado) throws PersistenciaException {
+        String codigoSQL = "SELECT "
+                + "id_transferencia, "
+                + "fecha_operacion, "
+                + "id_cuenta, "
+                + "monto, "
+                + "id_cuentaDestinatario "
+                + "FROM transferencias LIMIT ? OFFSET ?;";
+        List<Transferencia> listaTransferencias = new LinkedList<>();
+        try (
+                Connection conexion = this.GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(codigoSQL);) {
+            comando.setInt(1, configPaginado.getElementosPagina());
+            comando.setInt(2, configPaginado.getElementosASaltar());
+            ResultSet resultado = comando.executeQuery();
+            while (resultado.next()) {
+                Integer idTransferencia = resultado.getInt("id_transferencia");
+                String fechaOperacion = resultado.getString("fecha_operacion");
+                Integer idCuenta = resultado.getInt("id_cuenta");
+                Double monto = resultado.getDouble("monto");
+                Integer idCuentaDestinatario = resultado.getInt("id_cuentaDestinatario");
+                Transferencia transferencia = new Transferencia(idTransferencia, fechaOperacion, idCuenta, monto, idCuentaDestinatario);
+                listaTransferencias.add(transferencia);
+            }
+
+            return listaTransferencias;
+        } catch (SQLException ex) {
+            LOG.log(Level.SEVERE, ex.getMessage()); // Sustituye los System.err
+            throw new PersistenciaException("Error: No fue posible consultar la lista de clientes");
         }
     }
 

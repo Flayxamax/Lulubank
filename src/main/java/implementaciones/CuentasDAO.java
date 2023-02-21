@@ -173,4 +173,20 @@ public class CuentasDAO implements ICuentasDAO {
             throw new PersistenciaException("Error al consultar la lista de cuentas activas");
         }
     }
+
+    @Override
+    public Cuenta actualizarDescMonto(Integer idCuenta, Double saldo) throws PersistenciaException {
+        String codigoSQL = "update cuentas set saldo=saldo-? where id_cuenta = ? and estado = 'activa'";
+        try (
+                Connection conexion = GENERADOR_CONEXIONES.crearConexion(); PreparedStatement comando = conexion.prepareStatement(
+                codigoSQL, Statement.RETURN_GENERATED_KEYS);) {
+            comando.setDouble(1, saldo);
+            comando.setInt(2, idCuenta);
+            comando.executeUpdate();
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, e.getMessage());
+            throw new PersistenciaException("No fue posible descontar saldo.");
+        }
+        return null;
+    }
 }

@@ -6,6 +6,7 @@ package Interfaces;
 
 import Dominio.Retiro;
 import Excepciones.PersistenciaException;
+import Utils.ConfiguracionPaginado;
 import java.util.List;
 
 /**
@@ -13,6 +14,10 @@ import java.util.List;
  * @author ildex
  */
 public interface IRetirosDAO {
-    List<Retiro> consultarLista(Integer idCuenta) throws PersistenciaException;
-    void insertar(Integer idCuenta, Double monto) throws PersistenciaException;
+     public List<Retiro> consultarListaR(ConfiguracionPaginado configPaginado) throws PersistenciaException;
+    Retiro insertar(Integer idCuenta, Integer folio, Double monto) throws PersistenciaException;
+    Retiro consultar(Integer folio) throws PersistenciaException;
+    Retiro consultarCuenta(Integer folio) throws PersistenciaException;
+    boolean actualizar(Integer folio, String contra, String fechaA) throws PersistenciaException;
+    boolean actualizarEstado(Integer folio, String contra, String estado) throws PersistenciaException;
 }

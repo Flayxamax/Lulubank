@@ -17,11 +17,11 @@ import Utils.TextPrompt;
 import Utils.Validadores;
 import implementaciones.ClientesDAO;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
  *
  * @author ildex
  */
-public class registrarCliente extends javax.swing.JFrame {
+public class actualizarCliente extends javax.swing.JFrame {
 
     private static final Logger LOG = Logger.getLogger(ClientesDAO.class.getName());
     private final IClientesDAO clientesDAO;
@@ -37,6 +37,7 @@ public class registrarCliente extends javax.swing.JFrame {
     private final ICuentasDAO cuentasDAO;
     private final ITransferenciasDAO transferenciasDAO;
     private final IRetirosDAO retirosDAO;
+    private final String correo;
     private ConfiguracionPaginado configPaginado;
     private final Validadores validadores = new Validadores();
     private int xMouse;
@@ -49,75 +50,102 @@ public class registrarCliente extends javax.swing.JFrame {
      * @param direccionDAO
      * @param cuentasDAO
      */
-    public registrarCliente(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO, ITransferenciasDAO transferenciasDAO, IRetirosDAO retirosDAO) {
+    public actualizarCliente(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO, ITransferenciasDAO transferenciasDAO, String correo, IRetirosDAO retirosDAO) throws PersistenciaException {
         this.clientesDAO = clientesDAO;
         this.direccionDAO = direccionDAO;
         this.cuentasDAO = cuentasDAO;
         this.transferenciasDAO = transferenciasDAO;
+        this.correo = correo;
         this.retirosDAO = retirosDAO;
         initComponents();
+        ingresaCliente();
         LocalDate fechaActual = LocalDate.now();
         LocalDate minFecha = LocalDate.of(1900, 01, 01);
         calendar.getSettings().setDateRangeLimits(minFecha, fechaActual);
         TextPrompt nombre = new TextPrompt("Ingrese su nombre", txtNombre);
         TextPrompt aPaterno = new TextPrompt("Ingrese su apellido paterno", txtApellidoP);
         TextPrompt aMaterno = new TextPrompt("Ingrese su apellido materno", txtApellidoM);
-        TextPrompt correo = new TextPrompt("Ingrese su correo electrónico", txtCorreo);
+        TextPrompt correoA = new TextPrompt("Ingrese su correo electrónico", txtCorreo);
         TextPrompt contrasena = new TextPrompt("Ingrese su contraseña", txtPass);
         TextPrompt calle = new TextPrompt("Ingrese su calle", txtCalle);
         TextPrompt colonia = new TextPrompt("Ingrese su nombre", txtColonia);
         TextPrompt numCasa = new TextPrompt("Ingrese su número de casa", txtNumCasa);
     }
 
-    private Cliente extraerDatosFormulario(Direccion direccionGuardada) {
-        String nombre = this.txtNombre.getText();
-        String apellidoPaterno = this.txtApellidoP.getText();
-        String apellidoMaterno = this.txtApellidoM.getText();
-        String correo = this.txtCorreo.getText();
-        String contrasena = this.txtPass.getText();
-        Integer idDireccion = direccionGuardada.getIdDireccion();
-        LocalDate fechaN = this.calendar.getSelectedDate();
-        LocalDate fechaActual = LocalDate.now();
-        Date fechaNacimiento = new Date(fechaN.getYear() - 1900, fechaN.getMonthValue() - 1, fechaN.getDayOfMonth());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String fechaNa = sdf.format(fechaNacimiento);
-        Period periodo = Period.between(fechaActual, fechaN);
-        int edad = Math.abs(periodo.getYears());
-        if (edad < 18) {
-            JOptionPane.showMessageDialog(this, "Fecha invalida: Necesitas ser mayor de edad para registrarse", "Error", JOptionPane.ERROR_MESSAGE);
-            this.calendar.setSelectedDate(null);
-            fechaNa = null;
-        } else {
+    public void ingresaCliente() throws PersistenciaException {
+        Cliente clienteLogueado = this.clientesDAO.consultar(correo);
+        Direccion direccion = this.direccionDAO.consultar(clienteLogueado.getIdCliente());
+        txtNombre.setText(clienteLogueado.getNombre());
+        txtApellidoP.setText(clienteLogueado.getApellidoPaterno());
+        txtApellidoM.setText(clienteLogueado.getApellidoMaterno());
+        txtCorreo.setText(clienteLogueado.getCorreo());
+        txtPass.setText(clienteLogueado.getPassword());
+        txtCalle.setText(direccion.getCalle());
+        txtColonia.setText(direccion.getColonia());
+        txtNumCasa.setText(direccion.getNumCasa());
+    }
 
+    private Cliente extraerDatosFormulario() {
+        try {
+            Cliente clienteLogueado = this.clientesDAO.consultar(correo);
+            String nombre = this.txtNombre.getText();
+            String apellidoPaterno = this.txtApellidoP.getText();
+            String apellidoMaterno = this.txtApellidoM.getText();
+            String correo = this.txtCorreo.getText();
+            String contrasena = this.txtPass.getText();
+            LocalDate fechaN = this.calendar.getSelectedDate();
+            LocalDate fechaActual = LocalDate.now();
+            Date fechaNacimiento = new Date(fechaN.getYear() - 1900, fechaN.getMonthValue() - 1, fechaN.getDayOfMonth());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String fechaNa = sdf.format(fechaNacimiento);
+            Period periodo = Period.between(fechaActual, fechaN);
+            int edad = Math.abs(periodo.getYears());
+            if (edad < 18) {
+                JOptionPane.showMessageDialog(this, "Fecha invalida: Necesitas ser mayor de edad para registrarse", "Error", JOptionPane.ERROR_MESSAGE);
+                this.calendar.setSelectedDate(null);
+                fechaNa = null;
+            } else {
+
+            }
+            Cliente cliente = new Cliente(nombre, apellidoPaterno, apellidoMaterno, fechaNa, edad, correo, contrasena, clienteLogueado.getIdDireccion());
+            return cliente;
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(actualizarCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Cliente cliente = new Cliente(nombre, apellidoPaterno, apellidoMaterno, fechaNa, edad, correo, contrasena, idDireccion);
-        return cliente;
+        return null;
     }
 
     private Direccion extraerDireccionFormulario() {
-        String calle = this.txtCalle.getText();
-        String colonia = this.txtColonia.getText();
-        String numCasa = this.txtNumCasa.getText();
-        Direccion direccion = new Direccion(calle, colonia, numCasa);
-        return direccion;
+        try {
+            Cliente clienteLogueado = this.clientesDAO.consultar(correo);
+            String calle = this.txtCalle.getText();
+            String colonia = this.txtColonia.getText();
+            String numCasa = this.txtNumCasa.getText();
+            Direccion direccion = new Direccion(clienteLogueado.getIdDireccion(), calle, colonia, numCasa);
+            return direccion;
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(actualizarCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     private void mostrarMensajeClienteGuardado(Cliente clienteGuardado) {
-        JOptionPane.showMessageDialog(this, "Se agregó el cliente: " + clienteGuardado.getIdCliente(), "Información", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Se actualizó el cliente: " + clienteGuardado.getIdCliente(), "Información", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void mostrarMensajeErrorGuardado() {
-        JOptionPane.showMessageDialog(this, "No fue posible guardar el cliente", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "No fue posible actualizar el cliente", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private void guardar() {
         //Enviar a DAO
         try {
+            Cliente clienteLogueado = this.clientesDAO.consultar(correo);
             Direccion direccion = this.extraerDireccionFormulario();
-            Direccion direccionGuardada = this.direccionDAO.insertar(direccion);
-            Cliente cliente = this.extraerDatosFormulario(direccionGuardada);
-            Cliente clienteGuardado = this.clientesDAO.insertar(cliente);
-            this.mostrarMensajeClienteGuardado(clienteGuardado);
+            this.direccionDAO.actualizar(direccion, clienteLogueado.getIdCliente());
+            Cliente cliente = this.extraerDatosFormulario();
+            this.clientesDAO.actualizar(cliente, clienteLogueado.getIdCliente());
+            this.mostrarMensajeClienteGuardado(clienteLogueado);
         } catch (PersistenciaException e) {
             this.mostrarMensajeErrorGuardado();
         }
@@ -163,13 +191,14 @@ public class registrarCliente extends javax.swing.JFrame {
         sep1 = new javax.swing.JSeparator();
         sep = new javax.swing.JSeparator();
         calendar = new com.github.lgooddatepicker.components.CalendarPanel();
-        btnRegistrar = new javax.swing.JPanel();
-        lblRegistrar = new javax.swing.JLabel();
+        btnActualizar = new javax.swing.JPanel();
+        lblActualizar = new javax.swing.JLabel();
         header = new javax.swing.JPanel();
         btnRegresar = new javax.swing.JPanel();
         lblRegresar = new javax.swing.JLabel();
         btnSalir = new javax.swing.JPanel();
         lblX = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         lblwp = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -190,8 +219,9 @@ public class registrarCliente extends javax.swing.JFrame {
         lblCorreo.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jPanel1.add(lblCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 350, -1, -1));
 
-        txtCorreo.setBorder(null);
         txtCorreo.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
+        txtCorreo.setBorder(null);
+        txtCorreo.setForeground(new java.awt.Color(0, 0, 0));
         txtCorreo.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -201,11 +231,6 @@ public class registrarCliente extends javax.swing.JFrame {
         txtCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCorreoActionPerformed(evt);
-            }
-        });
-        txtCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCorreoKeyTyped(evt);
             }
         });
         jPanel1.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 380, 330, -1));
@@ -218,8 +243,9 @@ public class registrarCliente extends javax.swing.JFrame {
         lblNombre.setText("Nombre");
         jPanel1.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 110, -1, -1));
 
-        txtNombre.setBorder(null);
         txtNombre.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
+        txtNombre.setBorder(null);
+        txtNombre.setForeground(new java.awt.Color(0, 0, 0));
         txtNombre.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtNombre.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -238,8 +264,9 @@ public class registrarCliente extends javax.swing.JFrame {
         });
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, 330, -1));
 
-        txtApellidoP.setBorder(null);
         txtApellidoP.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
+        txtApellidoP.setBorder(null);
+        txtApellidoP.setForeground(new java.awt.Color(0, 0, 0));
         txtApellidoP.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtApellidoP.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -249,11 +276,6 @@ public class registrarCliente extends javax.swing.JFrame {
         txtApellidoP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtApellidoPActionPerformed(evt);
-            }
-        });
-        txtApellidoP.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtApellidoPKeyTyped(evt);
             }
         });
         jPanel1.add(txtApellidoP, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, 330, -1));
@@ -266,8 +288,9 @@ public class registrarCliente extends javax.swing.JFrame {
         lblApellidoM.setText("Apellido materno");
         jPanel1.add(lblApellidoM, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, -1, -1));
 
-        txtApellidoM.setBorder(null);
         txtApellidoM.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
+        txtApellidoM.setBorder(null);
+        txtApellidoM.setForeground(new java.awt.Color(0, 0, 0));
         txtApellidoM.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtApellidoM.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -279,15 +302,11 @@ public class registrarCliente extends javax.swing.JFrame {
                 txtApellidoMActionPerformed(evt);
             }
         });
-        txtApellidoM.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtApellidoMKeyTyped(evt);
-            }
-        });
         jPanel1.add(txtApellidoM, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 300, 330, -1));
 
         txtPass.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtPass.setBorder(null);
+        txtPass.setForeground(new java.awt.Color(0, 0, 0));
         txtPass.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -313,8 +332,9 @@ public class registrarCliente extends javax.swing.JFrame {
         lblCalle.setText("Calle");
         jPanel1.add(lblCalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 520, -1, -1));
 
-        txtCalle.setBorder(null);
         txtCalle.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
+        txtCalle.setBorder(null);
+        txtCalle.setForeground(new java.awt.Color(0, 0, 0));
         txtCalle.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtCalle.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -326,15 +346,11 @@ public class registrarCliente extends javax.swing.JFrame {
                 txtCalleActionPerformed(evt);
             }
         });
-        txtCalle.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCalleKeyTyped(evt);
-            }
-        });
         jPanel1.add(txtCalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 550, 330, -1));
 
-        txtColonia.setBorder(null);
         txtColonia.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
+        txtColonia.setBorder(null);
+        txtColonia.setForeground(new java.awt.Color(0, 0, 0));
         txtColonia.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtColonia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -344,11 +360,6 @@ public class registrarCliente extends javax.swing.JFrame {
         txtColonia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtColoniaActionPerformed(evt);
-            }
-        });
-        txtColonia.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtColoniaKeyTyped(evt);
             }
         });
         jPanel1.add(txtColonia, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 630, 330, -1));
@@ -361,8 +372,9 @@ public class registrarCliente extends javax.swing.JFrame {
         lblNumCasa.setText("Número casa");
         jPanel1.add(lblNumCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 680, -1, -1));
 
-        txtNumCasa.setBorder(null);
         txtNumCasa.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
+        txtNumCasa.setBorder(null);
+        txtNumCasa.setForeground(new java.awt.Color(0, 0, 0));
         txtNumCasa.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtNumCasa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -374,15 +386,11 @@ public class registrarCliente extends javax.swing.JFrame {
                 txtNumCasaActionPerformed(evt);
             }
         });
-        txtNumCasa.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNumCasaKeyTyped(evt);
-            }
-        });
         jPanel1.add(txtNumCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 710, 330, -1));
 
+        lblTitulo.setText("Actualizar cliente");
         lblTitulo.setFont(new java.awt.Font("Franklin Gothic Medium Cond", 1, 36)); // NOI18N
-        lblTitulo.setText("Registrar cliente");
+        lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(lblTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 40, -1, -1));
         jPanel1.add(sep8, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 370, 230, 10));
         jPanel1.add(sep7, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 740, 330, 10));
@@ -397,48 +405,48 @@ public class registrarCliente extends javax.swing.JFrame {
         calendar.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.add(calendar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 150, -1, -1));
 
-        btnRegistrar.setBackground(new java.awt.Color(51, 102, 255));
-        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnActualizar.setBackground(new java.awt.Color(51, 102, 255));
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnRegistrarMouseEntered(evt);
+                btnActualizarMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnRegistrarMouseExited(evt);
+                btnActualizarMouseExited(evt);
             }
         });
 
-        lblRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblRegistrar.setText("REGISTRAR");
-        lblRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        lblRegistrar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
-        lblRegistrar.setForeground(new java.awt.Color(255, 255, 255));
-        lblRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblActualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblActualizar.setText("ACTUALIZAR");
+        lblActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblActualizar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        lblActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        lblActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblRegistrarMouseClicked(evt);
+                lblActualizarMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblRegistrarMouseEntered(evt);
+                lblActualizarMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblRegistrarMouseExited(evt);
+                lblActualizarMouseExited(evt);
             }
         });
 
-        javax.swing.GroupLayout btnRegistrarLayout = new javax.swing.GroupLayout(btnRegistrar);
-        btnRegistrar.setLayout(btnRegistrarLayout);
-        btnRegistrarLayout.setHorizontalGroup(
-            btnRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+        javax.swing.GroupLayout btnActualizarLayout = new javax.swing.GroupLayout(btnActualizar);
+        btnActualizar.setLayout(btnActualizarLayout);
+        btnActualizarLayout.setHorizontalGroup(
+            btnActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
         );
-        btnRegistrarLayout.setVerticalGroup(
-            btnRegistrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnRegistrarLayout.createSequentialGroup()
+        btnActualizarLayout.setVerticalGroup(
+            btnActualizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, btnActualizarLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 700, 210, 40));
+        jPanel1.add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 700, 210, 40));
 
         header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -508,6 +516,21 @@ public class registrarCliente extends javax.swing.JFrame {
 
         jPanel1.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        jPanel2.setBackground(new java.awt.Color(82, 113, 255));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 380, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 660, 380, 70));
+
         lblwp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/wpRegister.png"))); // NOI18N
         jPanel1.add(lblwp, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 770));
 
@@ -550,35 +573,29 @@ public class registrarCliente extends javax.swing.JFrame {
         if (txtNombre.getText().length() >= 50) {
             evt.consume();
         }
-        final char keyChar = evt.getKeyChar();
-        if (!(Character.isAlphabetic(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
-            evt.consume();
-        } else if (Character.isLowerCase(evt.getKeyChar())) {
-            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
-        }
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCorreoActionPerformed
 
-    private void lblRegistrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseEntered
+    private void lblActualizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblActualizarMouseEntered
         // TODO add your handling code here:
-        btnRegistrar.setBackground(new Color(98, 137, 255));
-    }//GEN-LAST:event_lblRegistrarMouseEntered
+        btnActualizar.setBackground(new Color(98, 137, 255));
+    }//GEN-LAST:event_lblActualizarMouseEntered
 
-    private void btnRegistrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseExited
+    private void btnActualizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseExited
 
-    }//GEN-LAST:event_btnRegistrarMouseExited
+    }//GEN-LAST:event_btnActualizarMouseExited
 
-    private void btnRegistrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseEntered
+    private void btnActualizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseEntered
 
-    }//GEN-LAST:event_btnRegistrarMouseEntered
+    }//GEN-LAST:event_btnActualizarMouseEntered
 
-    private void lblRegistrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseExited
+    private void lblActualizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblActualizarMouseExited
         // TODO add your handling code here:
-        btnRegistrar.setBackground(new Color(32, 92, 255));
-    }//GEN-LAST:event_lblRegistrarMouseExited
+        btnActualizar.setBackground(new Color(32, 92, 255));
+    }//GEN-LAST:event_lblActualizarMouseExited
 
     private void txtNombreMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNombreMousePressed
         // TODO add your handling code here:
@@ -612,7 +629,7 @@ public class registrarCliente extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtNumCasaMousePressed
 
-    private void lblRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistrarMouseClicked
+    private void lblActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblActualizarMouseClicked
         // TODO add your handling code here:
         if (!validadores.validaNombre(txtNombre.getText())) {
             JOptionPane.showMessageDialog(this, "Nombre inválido, debe contener entre 3 y 50 caracteres", "Error", 0);
@@ -628,8 +645,6 @@ public class registrarCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Correo invalido", "Error", 0);
         } else if (calendar.getSelectedDate() == null) {
             JOptionPane.showMessageDialog(this, "Fecha vacia", "Error", 0);
-        } else if (!validadores.esVacia(txtCalle.getText())) {
-            JOptionPane.showMessageDialog(this, "Calle vacia", "Error", 0);
         } else if (!validadores.esVacia(txtColonia.getText())) {
             JOptionPane.showMessageDialog(this, "Colonia vacia", "Error", 0);
         } else if (!validadores.esVacia(txtNumCasa.getText())) {
@@ -637,11 +652,10 @@ public class registrarCliente extends javax.swing.JFrame {
         } else {
             guardar();
         }
-
 //        inicio in = new inicio(clientesDAO, direccionDAO);
 //        in.setVisible(true);
 //        dispose();
-    }//GEN-LAST:event_lblRegistrarMouseClicked
+    }//GEN-LAST:event_lblActualizarMouseClicked
 
     private void headerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMousePressed
         // TODO add your handling code here:
@@ -686,109 +700,29 @@ public class registrarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarMouseEntered
 
     private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
-        // TODO add your handling code here:
-        inicio in = new inicio(clientesDAO, direccionDAO, cuentasDAO, transferenciasDAO, retirosDAO);
-        in.setVisible(true);
-        dispose();
+        try {
+            // TODO add your handling code here:
+            Operaciones in = new Operaciones(clientesDAO, direccionDAO, txtCorreo.getText(), cuentasDAO, transferenciasDAO, retirosDAO);
+            in.setVisible(true);
+            dispose();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(actualizarCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnRegresarMouseClicked
 
     private void lblRegresarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegresarMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_lblRegresarMouseEntered
 
-    private void txtApellidoPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoPKeyTyped
-        if (txtApellidoP.getText().length() >= 30) {
-            evt.consume();
-        }
-        final char keyChar = evt.getKeyChar();
-        if (!(Character.isAlphabetic(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
-            evt.consume();
-        } else if (Character.isLowerCase(evt.getKeyChar())) {
-            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
-        }
-    }//GEN-LAST:event_txtApellidoPKeyTyped
-
-    private void txtApellidoMKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoMKeyTyped
-        if (txtApellidoM.getText().length() >= 30) {
-            evt.consume();
-        }
-        final char keyChar = evt.getKeyChar();
-        if (!(Character.isAlphabetic(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
-            evt.consume();
-        } else if (Character.isLowerCase(evt.getKeyChar())) {
-            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
-        }
-    }//GEN-LAST:event_txtApellidoMKeyTyped
-
-    private void txtCorreoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCorreoKeyTyped
-        if (txtCorreo.getText().length() >= 30) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtCorreoKeyTyped
-
-    private void txtCalleKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCalleKeyTyped
-        // TODO add your handling code here:
-        if (txtCalle.getText().length() >= 50) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtCalleKeyTyped
-
-    private void txtColoniaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtColoniaKeyTyped
-        // TODO add your handling code here:
-        if (txtColonia.getText().length() >= 50) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtColoniaKeyTyped
-
-    private void txtNumCasaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumCasaKeyTyped
-        // TODO add your handling code here:
-        if (txtNumCasa.getText().length() >= 5) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtNumCasaKeyTyped
-
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(registrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(registrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(registrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(registrarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new registrarCliente().setVisible(true);
-//            }
-//        });
-//    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel btnRegistrar;
+    private javax.swing.JPanel btnActualizar;
     private javax.swing.JPanel btnRegresar;
     private javax.swing.JPanel btnSalir;
     private com.github.lgooddatepicker.components.CalendarPanel calendar;
     private javax.swing.JPanel header;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblActualizar;
     private javax.swing.JLabel lblApellidoM;
     private javax.swing.JLabel lblApellidoM1;
     private javax.swing.JLabel lblApellidop;
@@ -798,7 +732,6 @@ public class registrarCliente extends javax.swing.JFrame {
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNumCasa;
-    private javax.swing.JLabel lblRegistrar;
     private javax.swing.JLabel lblRegresar;
     private javax.swing.JLabel lblSub;
     private javax.swing.JLabel lblSub2;

@@ -24,7 +24,7 @@ create table Clientes(
 
 create table Cuentas(
     id_cuenta int PRIMARY KEY AUTO_INCREMENT,
-    saldo decimal(8,4) default(0) not null,
+    saldo decimal(10,4) default(0) not null,
     fecha_apertura datetime default(current_timestamp()) not null,
     estado enum('activa','desactivada') default('activa'),
     id_cliente int not null,
@@ -35,12 +35,14 @@ create table Transferencias(
     id_transferencia int PRIMARY KEY AUTO_INCREMENT,
     fecha_operacion datetime default(current_timestamp()) not null,
     id_cuenta int not null,
+    monto decimal(10,4) default(0) not null,
+    id_cuentaDestinatario int not null,
     foreign key (id_cuenta) references Cuentas (id_cuenta)
 );
 
 create table depositos(
 	id_deposito int primary key,
-    monto decimal(8,4) not null,
+    monto decimal(10,4) default(0) not null,
     fecha_operacion datetime default(current_timestamp()) not null,
     id_cuenta int not null,
     foreign key (id_cuenta) references Cuentas (id_cuenta)
@@ -48,10 +50,36 @@ create table depositos(
 
 create table Retiros(
     folio int PRIMARY KEY AUTO_INCREMENT,
-    contrasena varchar(8) not null,
+    contrasena blob not null,
     estado enum ('cobrado', 'noCobrado') default('noCobrado'),
+    fecha_creacion datetime default(now()) not null,
     fecha_operacion datetime,
-    monto decimal(8,4) not null,
+    monto decimal(10,4) default(0) not null,
     id_cuenta int,
     foreign key (id_cuenta) references Cuentas (id_cuenta)
 );
+
+#Triggers
+DELIMITER //
+CREATE TRIGGER generar_id_cuenta BEFORE INSERT ON cuentas
+FOR EACH ROW
+BEGIN
+  DECLARE nuevo_id INT;
+  SET nuevo_id = FLOOR(RAND() * 8999) + 1000;
+  WHILE (SELECT COUNT(*) FROM cuentas WHERE id_cuenta = nuevo_id) > 0 DO
+    SET nuevo_id = FLOOR(RAND() * 8999) + 1000;
+  END WHILE;
+  SET NEW.id_cuenta = nuevo_id;
+END; //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER generar_contrasena BEFORE INSERT ON retiros
+FOR EACH ROW
+BEGIN
+    DECLARE contrasena INT;
+    SET contrasena = FLOOR(RAND() * 90000000) + 10000000;
+    SET NEW.contrasena = AES_ENCRYPT(contrasena, 'hunter2');
+END;
+//
+DELIMITER ;
