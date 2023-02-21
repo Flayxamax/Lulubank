@@ -67,7 +67,6 @@ public class TransferenciasDAO implements ITransferenciasDAO {
             comando.setDouble(2, monto);
             comando.setInt(3, idCuentaDestinatario);
             comando.executeUpdate();
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al hacer la transfencia", "LuluAdmin", 0);
             LOG.log(Level.SEVERE, e.getMessage());

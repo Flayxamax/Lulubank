@@ -20,4 +20,6 @@ public interface IRetirosDAO {
     Retiro consultarCuenta(Integer folio) throws PersistenciaException;
     boolean actualizar(Integer folio, String contra, String fechaA) throws PersistenciaException;
     boolean actualizarEstado(Integer folio, String contra, String estado) throws PersistenciaException;
+    List<Retiro> consultarLista(Integer idCuenta) throws PersistenciaException;
+    Retiro insertar(Integer idCuenta, Double monto) throws PersistenciaException;
 }

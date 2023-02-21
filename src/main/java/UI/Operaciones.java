@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -44,6 +45,7 @@ public class Operaciones extends javax.swing.JFrame {
     private final ICuentasDAO cuentasDAO;
     private final ITransferenciasDAO transferenciasDAO;
     private final IRetirosDAO retirosDAO;
+    private final IRetirosDAO retirosDAO = null;
     private final String correo;
     private final ConfiguracionPaginado configPaginado;
     private final Validadores validadores = new Validadores();
@@ -161,6 +163,7 @@ public class Operaciones extends javax.swing.JFrame {
     }
 
     private Retiro extraerDatosRetiro() {
+    private Retiro extraerDatosRetiro(){
         String folio = this.txtFolio.getText();
         String contrasena = this.txtPass.getText();
         Retiro retiro = new Retiro(Integer.parseInt(folio), contrasena);
@@ -179,6 +182,7 @@ public class Operaciones extends javax.swing.JFrame {
 ////        Retiro retiroGuardado = this.retirosDAO.insertar(retiro.getFolio(), retiro.getContrasena());
 //        return retiroGuardado;
 //    }
+
     private Cuenta depositar() throws PersistenciaException {
         Cuenta cuenta = this.extraerDatosFrmDeposito();
         Cuenta cuentaGuardada = this.cuentasDAO.actualizarMonto(cuenta.getIdCuenta(), cuenta.getSaldo());
@@ -466,7 +470,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnHistorial.setBackground(new java.awt.Color(102, 102, 255));
-        btnHistorial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHistorial.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnHistorial.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnHistorialMouseClicked(evt);
@@ -498,6 +502,9 @@ public class Operaciones extends javax.swing.JFrame {
         btnRetiroT.setBackground(new java.awt.Color(102, 102, 255));
         btnRetiroT.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRetiroT.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnRetiro.setBackground(new java.awt.Color(102, 102, 255));
+        btnRetiro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnRetiro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnRetiroTMouseClicked(evt);
             }
@@ -527,7 +534,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(btnRetiroT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 160, 50));
 
         btnDeposito.setBackground(new java.awt.Color(102, 102, 255));
-        btnDeposito.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDeposito.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDeposito.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnDepositoMouseClicked(evt);
@@ -558,7 +565,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(btnDeposito, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 160, 50));
 
         btnTransferencia.setBackground(new java.awt.Color(102, 102, 255));
-        btnTransferencia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnTransferencia.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnTransferencia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnTransferenciaMouseClicked(evt);
@@ -590,7 +597,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 140, 10));
 
         btnCuenta.setBackground(new java.awt.Color(102, 102, 255));
-        btnCuenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCuenta.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnCuenta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnCuentaMouseClicked(evt);
@@ -1151,7 +1158,6 @@ public class Operaciones extends javax.swing.JFrame {
         panelHistorial.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblHisto.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblHisto.setForeground(new java.awt.Color(0, 0, 0));
         lblHisto.setText("Historial");
         panelHistorial.add(lblHisto, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 30, -1, -1));
 
@@ -1200,6 +1206,12 @@ public class Operaciones extends javax.swing.JFrame {
 
         btnSiguiente1.setText("Siguiente");
         btnSiguiente1.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblRetirar1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        lblRetirar1.setForeground(new java.awt.Color(255, 255, 255));
+        lblRetirar1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRetirar1.setText("TILIN");
+        lblRetirar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblRetirar1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnSiguiente1MouseClicked(evt);
             }
@@ -1380,6 +1392,7 @@ public class Operaciones extends javax.swing.JFrame {
                 depositar();
                 this.cargarTablaCuentas(idCuenta);
                 JOptionPane.showMessageDialog(null, "¡Depósito logrado con éxito!", "LuluAdmin", 1);
+                                JOptionPane.showMessageDialog(null, "¡Depósito logrado con éxito!", "LuluAdmin", 1);
             } catch (PersistenciaException ex) {
                 Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1540,7 +1553,12 @@ public class Operaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_lblDepositar1MouseEntered
 
     private void lblDepositar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDepositar1MouseClicked
-
+        // TODO add your handling code here:
+         if (!validadores.esVacia(txtFolio.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo de folio vacío", "Error", 0);
+         } if (!validadores.esVacia(txtPass.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo de contraseña vacío", "Error", 0);
+         }
     }//GEN-LAST:event_lblDepositar1MouseClicked
 
     private void btnBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBorrarMouseClicked
@@ -1600,7 +1618,16 @@ public class Operaciones extends javax.swing.JFrame {
         } catch (PersistenciaException ex) {
             JOptionPane.showMessageDialog(this, "No se pudo concrecar la transferencia", "Error", 0);
         }
-
+            if(!validadores.esVacia(txtMontoO.getText())){
+                JOptionPane.showMessageDialog(this, "Campo de monto vacío", "Error", 0);
+            }else if(!validadores.esVacia(txtCuentaD.getText())){
+                JOptionPane.showMessageDialog(this, "Campo de cuenta vacío", "Error", 0);
+            }else{
+                this.transferir();
+            } 
+        } catch (PersistenciaException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo concrecar la transferencia", "Error", 0);           
+        }
     }//GEN-LAST:event_lblTransferirlblDepositar1MouseClicked
 
     private void lblTransferirlblDepositar1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTransferirlblDepositar1MouseEntered
@@ -1646,6 +1673,8 @@ public class Operaciones extends javax.swing.JFrame {
             Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        String monto = JOptionPane.showInputDialog("Ingrese el monto");
+
     }//GEN-LAST:event_lblGenreMouseClicked
 
     private void lblGenreMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblGenreMouseEntered
@@ -1677,6 +1706,13 @@ public class Operaciones extends javax.swing.JFrame {
             Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel1MouseClicked
+
+        // TODO add your handling code here:
+        int min = 8;
+        int max = 9;
+        Random random = new Random();
+        int value = random.nextInt(max + min) + min;
+    }//GEN-LAST:event_btnGenreMouseClicked
 
     private void txtMontoOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMontoOKeyTyped
         // TODO add your handling code here:
@@ -1722,7 +1758,6 @@ public class Operaciones extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtPassKeyTyped
-
     private void txtMontoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMontoKeyTyped
         // TODO add your handling code here:
         char car = evt.getKeyChar();

@@ -35,6 +35,7 @@ public class RetirosDAO implements IRetirosDAO {
 
     @Override
     public Retiro insertar(Integer idCuenta, Integer folio, Double monto) throws PersistenciaException {
+    public Retiro insertar(Integer idCuenta, Double monto) throws PersistenciaException {
         try {
             Connection conexion = GENERADOR_CONEXIONES.crearConexion();
             CallableStatement cstmt = conexion.prepareCall("{call retiro(?, ?, ?)}");
@@ -82,6 +83,7 @@ public class RetirosDAO implements IRetirosDAO {
             LOG.log(Level.SEVERE, e.getMessage());
             throw new PersistenciaException("No fue posible ingresar la fecha al retiro");
         }
+        return null;
     }
 
     @Override
