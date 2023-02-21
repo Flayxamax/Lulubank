@@ -381,6 +381,8 @@ public class inicio extends javax.swing.JFrame {
                     Operaciones op = new Operaciones(clientesDAO, direccionDAO, txtCorreo.getText(), cuentasDAO, transferenciasDAO);
                     op.setVisible(true);
                     dispose();
+                }else{
+                    JOptionPane.showMessageDialog(this, "Datos erroneos, intenta de nuevo.", "Error", 0);
                 }
             } catch (PersistenciaException ex) {
                 Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);

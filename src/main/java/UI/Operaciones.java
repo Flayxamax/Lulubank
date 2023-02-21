@@ -6,16 +6,19 @@ package UI;
 
 import Dominio.Cliente;
 import Dominio.Cuenta;
+import Dominio.Retiro;
 import Excepciones.PersistenciaException;
 import Interfaces.IClientesDAO;
 import Interfaces.ICuentasDAO;
 import Interfaces.IDireccionDAO;
+import Interfaces.IRetirosDAO;
 import Interfaces.ITransferenciasDAO;
 import Utils.Validadores;
 import implementaciones.CuentasDAO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -37,6 +40,7 @@ public class Operaciones extends javax.swing.JFrame {
     private final IDireccionDAO direccionDAO;
     private final ICuentasDAO cuentasDAO;
     private final ITransferenciasDAO transferenciasDAO;
+    private final IRetirosDAO retirosDAO = null;
     private final String correo;
     private final Validadores validadores = new Validadores();
     private int xMouse;
@@ -124,6 +128,13 @@ public class Operaciones extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "No fue posible crear una cuenta", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    private Retiro extraerDatosRetiro(){
+        String folio = this.txtFolio.getText();
+        String contrasena = this.txtPass.getText();
+        Retiro retiro = new Retiro(Integer.parseInt(folio), contrasena);
+        return retiro;
+    }
+    
     private Cuenta extraerDatosFrmDeposito() {
         String idCuenta = this.txtCuenta.getText();
         String deposito = this.txtSaldo.getText();
@@ -131,6 +142,12 @@ public class Operaciones extends javax.swing.JFrame {
         return cuenta;
     }
 
+//    private Retiro retirar() throws PersistenciaException{
+//        Retiro retiro = this.extraerDatosRetiro();
+////        Retiro retiroGuardado = this.retirosDAO.insertar(retiro.getFolio(), retiro.getContrasena());
+//        return retiroGuardado;
+//    }
+    
     private Cuenta depositar() throws PersistenciaException {
         Cuenta cuenta = this.extraerDatosFrmDeposito();
         Cuenta cuentaGuardada = this.cuentasDAO.actualizarMonto(cuenta.getIdCuenta(), cuenta.getSaldo());
@@ -345,7 +362,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnHistorial.setBackground(new java.awt.Color(102, 102, 255));
-        btnHistorial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHistorial.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnHistorial.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnHistorialMouseClicked(evt);
@@ -375,7 +392,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 160, 50));
 
         btnRetiro.setBackground(new java.awt.Color(102, 102, 255));
-        btnRetiro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRetiro.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnRetiro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnRetiroMouseClicked(evt);
@@ -406,7 +423,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(btnRetiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 160, 50));
 
         btnDeposito.setBackground(new java.awt.Color(102, 102, 255));
-        btnDeposito.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDeposito.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDeposito.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnDepositoMouseClicked(evt);
@@ -437,7 +454,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(btnDeposito, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 160, 50));
 
         btnTransferencia.setBackground(new java.awt.Color(102, 102, 255));
-        btnTransferencia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnTransferencia.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnTransferencia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnTransferenciaMouseClicked(evt);
@@ -469,7 +486,7 @@ public class Operaciones extends javax.swing.JFrame {
         barraIzq.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 140, 10));
 
         btnCuenta.setBackground(new java.awt.Color(102, 102, 255));
-        btnCuenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCuenta.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnCuenta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnCuentaMouseClicked(evt);
@@ -538,7 +555,6 @@ public class Operaciones extends javax.swing.JFrame {
         panelContenido.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblKk.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblKk.setForeground(new java.awt.Color(0, 0, 0));
         lblKk.setText("Contenido");
         panelContenido.add(lblKk, new org.netbeans.lib.awtextra.AbsoluteConstraints(235, 25, -1, -1));
 
@@ -581,7 +597,7 @@ public class Operaciones extends javax.swing.JFrame {
         lblGenre.setForeground(new java.awt.Color(255, 255, 255));
         lblGenre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblGenre.setText("GENERAR RETIRO");
-        lblGenre.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblGenre.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblGenre.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblGenreMouseClicked(evt);
@@ -622,7 +638,7 @@ public class Operaciones extends javax.swing.JFrame {
         lblCrear.setForeground(new java.awt.Color(255, 255, 255));
         lblCrear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblCrear.setText("CREAR CUENTA");
-        lblCrear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblCrear.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblCrear.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblCrearMouseClicked(evt);
@@ -695,7 +711,7 @@ public class Operaciones extends javax.swing.JFrame {
         lblBorrar.setForeground(new java.awt.Color(255, 255, 255));
         lblBorrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblBorrar.setText("BORRAR CUENTA");
-        lblBorrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblBorrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblBorrarMouseClicked(evt);
@@ -727,36 +743,42 @@ public class Operaciones extends javax.swing.JFrame {
         panelTransferencia.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo1.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblTitulo1.setForeground(new java.awt.Color(0, 0, 0));
         lblTitulo1.setText("Transferencia");
         panelTransferencia.add(lblTitulo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, 290, -1));
 
         lblCuentaDes.setFont(new java.awt.Font("Franklin Gothic Book", 0, 36)); // NOI18N
-        lblCuentaDes.setForeground(new java.awt.Color(0, 0, 0));
         lblCuentaDes.setText("Cuenta destino");
         panelTransferencia.add(lblCuentaDes, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 190, 240, -1));
 
         txtCuentaD.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtCuentaD.setBorder(null);
+        txtCuentaD.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCuentaDKeyTyped(evt);
+            }
+        });
         panelTransferencia.add(txtCuentaD, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 250, 130, 16));
 
         jSp7.setForeground(new java.awt.Color(0, 0, 0));
         panelTransferencia.add(jSp7, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 130, 10));
 
         lblCuentaO.setFont(new java.awt.Font("Franklin Gothic Book", 0, 36)); // NOI18N
-        lblCuentaO.setForeground(new java.awt.Color(0, 0, 0));
         lblCuentaO.setText("Cuenta origen");
         panelTransferencia.add(lblCuentaO, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 220, -1));
 
         txtMontoO.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtMontoO.setBorder(null);
+        txtMontoO.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMontoOKeyTyped(evt);
+            }
+        });
         panelTransferencia.add(txtMontoO, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 130, 16));
 
         jSp5.setForeground(new java.awt.Color(0, 0, 0));
         panelTransferencia.add(jSp5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 130, 10));
 
         lblMontoO.setFont(new java.awt.Font("Franklin Gothic Book", 0, 36)); // NOI18N
-        lblMontoO.setForeground(new java.awt.Color(0, 0, 0));
         lblMontoO.setText("Monto");
         panelTransferencia.add(lblMontoO, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 160, -1));
 
@@ -781,7 +803,7 @@ public class Operaciones extends javax.swing.JFrame {
         lblTransferir.setForeground(new java.awt.Color(255, 255, 255));
         lblTransferir.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTransferir.setText("TRANSFERIR");
-        lblTransferir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblTransferir.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblTransferir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblTransferirlblDepositar1MouseClicked(evt);
@@ -828,15 +850,18 @@ public class Operaciones extends javax.swing.JFrame {
 
         txtCuenta.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtCuenta.setBorder(null);
+        txtCuenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCuentaKeyTyped(evt);
+            }
+        });
         panelDeposito.add(txtCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, 130, 16));
 
         lblTituloD.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblTituloD.setForeground(new java.awt.Color(0, 0, 0));
         lblTituloD.setText("Depósito");
         panelDeposito.add(lblTituloD, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
 
         lblCuentaD.setFont(new java.awt.Font("Franklin Gothic Book", 0, 36)); // NOI18N
-        lblCuentaD.setForeground(new java.awt.Color(0, 0, 0));
         lblCuentaD.setText("Cuenta");
         panelDeposito.add(lblCuentaD, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 130, -1, -1));
 
@@ -844,12 +869,16 @@ public class Operaciones extends javax.swing.JFrame {
         panelDeposito.add(jSp2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 130, 10));
 
         lblSaldo.setFont(new java.awt.Font("Franklin Gothic Book", 0, 36)); // NOI18N
-        lblSaldo.setForeground(new java.awt.Color(0, 0, 0));
         lblSaldo.setText("Saldo");
         panelDeposito.add(lblSaldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 130, -1, -1));
 
         txtSaldo.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtSaldo.setBorder(null);
+        txtSaldo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSaldoKeyTyped(evt);
+            }
+        });
         panelDeposito.add(txtSaldo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 180, 130, 16));
 
         jSp1.setForeground(new java.awt.Color(0, 0, 0));
@@ -870,7 +899,7 @@ public class Operaciones extends javax.swing.JFrame {
         lblDepositar.setForeground(new java.awt.Color(255, 255, 255));
         lblDepositar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblDepositar.setText("DEPOSITAR");
-        lblDepositar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblDepositar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblDepositar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblDepositarMouseClicked(evt);
@@ -902,16 +931,19 @@ public class Operaciones extends javax.swing.JFrame {
         panelRetiro.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblKk2.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblKk2.setForeground(new java.awt.Color(0, 0, 0));
         lblKk2.setText("Retiro");
         panelRetiro.add(lblKk2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
 
         txtFolio.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtFolio.setBorder(null);
+        txtFolio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtFolioKeyTyped(evt);
+            }
+        });
         panelRetiro.add(txtFolio, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 170, 130, 16));
 
         lblFolio.setFont(new java.awt.Font("Franklin Gothic Book", 0, 36)); // NOI18N
-        lblFolio.setForeground(new java.awt.Color(0, 0, 0));
         lblFolio.setText("Folio");
         panelRetiro.add(lblFolio, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, 80, -1));
 
@@ -919,7 +951,6 @@ public class Operaciones extends javax.swing.JFrame {
         panelRetiro.add(jSp3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 190, 130, 10));
 
         lblContrasena.setFont(new java.awt.Font("Franklin Gothic Book", 0, 36)); // NOI18N
-        lblContrasena.setForeground(new java.awt.Color(0, 0, 0));
         lblContrasena.setText("Contraseña");
         panelRetiro.add(lblContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 210, -1, -1));
 
@@ -941,7 +972,7 @@ public class Operaciones extends javax.swing.JFrame {
         lblRetirar.setForeground(new java.awt.Color(255, 255, 255));
         lblRetirar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRetirar.setText("RETIRAR");
-        lblRetirar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRetirar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblRetirar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblDepositar1MouseClicked(evt);
@@ -971,6 +1002,11 @@ public class Operaciones extends javax.swing.JFrame {
 
         txtPass.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtPass.setBorder(null);
+        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPassKeyTyped(evt);
+            }
+        });
         panelRetiro.add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 270, 130, -1));
 
         getContentPane().add(panelRetiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 680, 500));
@@ -979,7 +1015,6 @@ public class Operaciones extends javax.swing.JFrame {
         panelHistorial.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblHisto.setFont(new java.awt.Font("Eras Medium ITC", 0, 48)); // NOI18N
-        lblHisto.setForeground(new java.awt.Color(0, 0, 0));
         lblHisto.setText("Historial");
         panelHistorial.add(lblHisto, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, -1, -1));
 
@@ -998,7 +1033,7 @@ public class Operaciones extends javax.swing.JFrame {
         lblRetirar1.setForeground(new java.awt.Color(255, 255, 255));
         lblRetirar1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRetirar1.setText("TILIN");
-        lblRetirar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRetirar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblRetirar1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblRetirar1lblDepositar1MouseClicked(evt);
@@ -1137,6 +1172,7 @@ public class Operaciones extends javax.swing.JFrame {
             try {
                 depositar();
                 this.cargarTablaCuentas(idCuenta);
+                                JOptionPane.showMessageDialog(null, "¡Depósito logrado con éxito!", "LuluAdmin", 1);
             } catch (PersistenciaException ex) {
                 Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1192,6 +1228,7 @@ public class Operaciones extends javax.swing.JFrame {
             try {
                 this.crearCuenta();
                 this.comboCuenta();
+                JOptionPane.showMessageDialog(null, "¡Cuenta creada con éxito!", "LuluAdmin", 1);
             } catch (PersistenciaException ex) {
                 Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1235,9 +1272,11 @@ public class Operaciones extends javax.swing.JFrame {
                         int respuesta = JOptionPane.showConfirmDialog(null, "La cuenta a eliminar contiene saldo disponible ¿Estás seguro de que quieres eliminarla?", "Confirmación", JOptionPane.YES_NO_OPTION);
                         if (respuesta == JOptionPane.YES_OPTION) {
                             this.cuentasDAO.actualizarEstado(idCuenta);
+                            this.cargarTablaCuentas(idCuenta);
                         }
                     } else {
                         this.cuentasDAO.actualizarEstado(idCuenta);
+                        this.cargarTablaCuentas(idCuenta);
                         JOptionPane.showMessageDialog(this, "Se eliminó la cuenta " + idCuenta, "LuluAdmin", 0);
                     }
                 } else {
@@ -1296,6 +1335,11 @@ public class Operaciones extends javax.swing.JFrame {
 
     private void lblDepositar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDepositar1MouseClicked
         // TODO add your handling code here:
+         if (!validadores.esVacia(txtFolio.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo de folio vacío", "Error", 0);
+         } if (!validadores.esVacia(txtPass.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo de contraseña vacío", "Error", 0);
+         }
     }//GEN-LAST:event_lblDepositar1MouseClicked
 
     private void btnBorrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBorrarMouseClicked
@@ -1355,10 +1399,17 @@ public class Operaciones extends javax.swing.JFrame {
 
     private void lblTransferirlblDepositar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTransferirlblDepositar1MouseClicked
         try {
-            this.transferir();
+            if(!validadores.esVacia(txtMontoO.getText())){
+                JOptionPane.showMessageDialog(this, "Campo de monto vacío", "Error", 0);
+            }else if(!validadores.esVacia(txtCuentaD.getText())){
+                JOptionPane.showMessageDialog(this, "Campo de cuenta vacío", "Error", 0);
+            }else{
+                this.transferir();
+            } 
         } catch (PersistenciaException ex) {
-            Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "No se pudo concrecar la transferencia", "Error", 0);           
         }
+        
     }//GEN-LAST:event_lblTransferirlblDepositar1MouseClicked
 
     private void lblTransferirlblDepositar1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTransferirlblDepositar1MouseEntered
@@ -1389,6 +1440,8 @@ public class Operaciones extends javax.swing.JFrame {
 
     private void lblGenreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblGenreMouseClicked
         // TODO add your handling code here:
+        String monto = JOptionPane.showInputDialog("Ingrese el monto");
+        
     }//GEN-LAST:event_lblGenreMouseClicked
 
     private void lblGenreMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblGenreMouseEntered
@@ -1409,10 +1462,56 @@ public class Operaciones extends javax.swing.JFrame {
 
     private void btnGenreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGenreMouseClicked
         // TODO add your handling code here:
-        int min = 8;int max = 9;
+        int min = 8;
+        int max = 9;
         Random random = new Random();
         int value = random.nextInt(max + min) + min;
     }//GEN-LAST:event_btnGenreMouseClicked
+
+    private void txtMontoOKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMontoOKeyTyped
+        // TODO add your handling code here:
+        char car = evt.getKeyChar();
+        if ((car < '0' || car > '9') && (car < ',' || car > '.')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtMontoOKeyTyped
+
+    private void txtCuentaDKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuentaDKeyTyped
+        // TODO add your handling code here:
+        char car = evt.getKeyChar();
+        if ((car < '0' || car > '9') && (car < ',' || car > '.')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCuentaDKeyTyped
+
+    private void txtCuentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuentaKeyTyped
+        char car = evt.getKeyChar();
+        if ((car < '0' || car > '9') && (car < ',' || car > '.')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCuentaKeyTyped
+
+    private void txtSaldoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSaldoKeyTyped
+        // TODO add your handling code here:
+        char car = evt.getKeyChar();
+        if ((car < '0' || car > '9') && (car < ',' || car > '.')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtSaldoKeyTyped
+
+    private void txtFolioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFolioKeyTyped
+        char car = evt.getKeyChar();
+        if ((car < '0' || car > '9') && (car < ',' || car > '.')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtFolioKeyTyped
+
+    private void txtPassKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyTyped
+        char car = evt.getKeyChar();
+        if ((car < '0' || car > '9') && (car < ',' || car > '.')) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPassKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel barraIzq;
@@ -1421,8 +1520,6 @@ public class Operaciones extends javax.swing.JFrame {
     private javax.swing.JPanel btnCrear;
     private javax.swing.JPanel btnCuenta;
     private javax.swing.JPanel btnDepositar;
-    private javax.swing.JPanel btnDepositar1;
-    private javax.swing.JPanel btnDepositar2;
     private javax.swing.JPanel btnDeposito;
     private javax.swing.JPanel btnGenre;
     private javax.swing.JPanel btnHistorial;
@@ -1459,8 +1556,6 @@ public class Operaciones extends javax.swing.JFrame {
     private javax.swing.JLabel lblCuentaDes;
     private javax.swing.JLabel lblCuentaO;
     private javax.swing.JLabel lblDepositar;
-    private javax.swing.JLabel lblDepositar1;
-    private javax.swing.JLabel lblDepositar2;
     private javax.swing.JLabel lblDeposito;
     private javax.swing.JLabel lblDineroImg;
     private javax.swing.JLabel lblFolio;

@@ -16,6 +16,7 @@ import Utils.TextPrompt;
 import Utils.Validadores;
 import implementaciones.ClientesDAO;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -186,9 +187,8 @@ public class registrarCliente extends javax.swing.JFrame {
         lblCorreo.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jPanel1.add(lblCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 350, -1, -1));
 
-        txtCorreo.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtCorreo.setBorder(null);
-        txtCorreo.setForeground(new java.awt.Color(0, 0, 0));
+        txtCorreo.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtCorreo.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -198,6 +198,11 @@ public class registrarCliente extends javax.swing.JFrame {
         txtCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCorreoActionPerformed(evt);
+            }
+        });
+        txtCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCorreoKeyTyped(evt);
             }
         });
         jPanel1.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 380, 330, -1));
@@ -210,9 +215,8 @@ public class registrarCliente extends javax.swing.JFrame {
         lblNombre.setText("Nombre");
         jPanel1.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 110, -1, -1));
 
-        txtNombre.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtNombre.setBorder(null);
-        txtNombre.setForeground(new java.awt.Color(0, 0, 0));
+        txtNombre.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtNombre.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtNombre.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -231,9 +235,8 @@ public class registrarCliente extends javax.swing.JFrame {
         });
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, 330, -1));
 
-        txtApellidoP.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtApellidoP.setBorder(null);
-        txtApellidoP.setForeground(new java.awt.Color(0, 0, 0));
+        txtApellidoP.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtApellidoP.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtApellidoP.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -243,6 +246,11 @@ public class registrarCliente extends javax.swing.JFrame {
         txtApellidoP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtApellidoPActionPerformed(evt);
+            }
+        });
+        txtApellidoP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApellidoPKeyTyped(evt);
             }
         });
         jPanel1.add(txtApellidoP, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, 330, -1));
@@ -255,9 +263,8 @@ public class registrarCliente extends javax.swing.JFrame {
         lblApellidoM.setText("Apellido materno");
         jPanel1.add(lblApellidoM, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, -1, -1));
 
-        txtApellidoM.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtApellidoM.setBorder(null);
-        txtApellidoM.setForeground(new java.awt.Color(0, 0, 0));
+        txtApellidoM.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtApellidoM.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtApellidoM.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -269,11 +276,15 @@ public class registrarCliente extends javax.swing.JFrame {
                 txtApellidoMActionPerformed(evt);
             }
         });
+        txtApellidoM.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtApellidoMKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtApellidoM, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 300, 330, -1));
 
         txtPass.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtPass.setBorder(null);
-        txtPass.setForeground(new java.awt.Color(0, 0, 0));
         txtPass.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -299,9 +310,8 @@ public class registrarCliente extends javax.swing.JFrame {
         lblCalle.setText("Calle");
         jPanel1.add(lblCalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 520, -1, -1));
 
-        txtCalle.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtCalle.setBorder(null);
-        txtCalle.setForeground(new java.awt.Color(0, 0, 0));
+        txtCalle.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtCalle.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtCalle.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -313,11 +323,15 @@ public class registrarCliente extends javax.swing.JFrame {
                 txtCalleActionPerformed(evt);
             }
         });
+        txtCalle.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCalleKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtCalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 550, 330, -1));
 
-        txtColonia.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtColonia.setBorder(null);
-        txtColonia.setForeground(new java.awt.Color(0, 0, 0));
+        txtColonia.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtColonia.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtColonia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -327,6 +341,11 @@ public class registrarCliente extends javax.swing.JFrame {
         txtColonia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtColoniaActionPerformed(evt);
+            }
+        });
+        txtColonia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtColoniaKeyTyped(evt);
             }
         });
         jPanel1.add(txtColonia, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 630, 330, -1));
@@ -339,9 +358,8 @@ public class registrarCliente extends javax.swing.JFrame {
         lblNumCasa.setText("Número casa");
         jPanel1.add(lblNumCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 680, -1, -1));
 
-        txtNumCasa.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtNumCasa.setBorder(null);
-        txtNumCasa.setForeground(new java.awt.Color(0, 0, 0));
+        txtNumCasa.setFont(new java.awt.Font("Franklin Gothic Book", 0, 18)); // NOI18N
         txtNumCasa.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtNumCasa.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -351,6 +369,11 @@ public class registrarCliente extends javax.swing.JFrame {
         txtNumCasa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNumCasaActionPerformed(evt);
+            }
+        });
+        txtNumCasa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNumCasaKeyTyped(evt);
             }
         });
         jPanel1.add(txtNumCasa, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 710, 330, -1));
@@ -384,7 +407,7 @@ public class registrarCliente extends javax.swing.JFrame {
 
         lblRegistrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRegistrar.setText("REGISTRAR");
-        lblRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblRegistrar.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         lblRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         lblRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -524,6 +547,12 @@ public class registrarCliente extends javax.swing.JFrame {
         if (txtNombre.getText().length() >= 50) {
             evt.consume();
         }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isAlphabetic(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(evt.getKeyChar())) {
+            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
+        }
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
@@ -596,9 +625,16 @@ public class registrarCliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Correo invalido", "Error", 0);
         } else if (calendar.getSelectedDate() == null) {
             JOptionPane.showMessageDialog(this, "Fecha vacia", "Error", 0);
+        } else if (!validadores.esVacia(txtCalle.getText())) {
+            JOptionPane.showMessageDialog(this, "Calle vacia", "Error", 0);
+        } else if (!validadores.esVacia(txtColonia.getText())) {
+            JOptionPane.showMessageDialog(this, "Colonia vacia", "Error", 0);
+        } else if (!validadores.esVacia(txtNumCasa.getText())) {
+            JOptionPane.showMessageDialog(this, "Número de casa vacío", "Error", 0);
         } else {
             guardar();
         }
+
 //        inicio in = new inicio(clientesDAO, direccionDAO);
 //        in.setVisible(true);
 //        dispose();
@@ -656,6 +692,57 @@ public class registrarCliente extends javax.swing.JFrame {
     private void lblRegresarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegresarMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_lblRegresarMouseEntered
+
+    private void txtApellidoPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoPKeyTyped
+        if (txtApellidoP.getText().length() >= 30) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isAlphabetic(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(evt.getKeyChar())) {
+            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
+        }
+    }//GEN-LAST:event_txtApellidoPKeyTyped
+
+    private void txtApellidoMKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoMKeyTyped
+        if (txtApellidoM.getText().length() >= 30) {
+            evt.consume();
+        }
+        final char keyChar = evt.getKeyChar();
+        if (!(Character.isAlphabetic(keyChar) || (keyChar == KeyEvent.VK_BACK_SPACE) || keyChar == KeyEvent.VK_DELETE)) {
+            evt.consume();
+        } else if (Character.isLowerCase(evt.getKeyChar())) {
+            evt.setKeyChar(Character.toUpperCase(evt.getKeyChar()));
+        }
+    }//GEN-LAST:event_txtApellidoMKeyTyped
+
+    private void txtCorreoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCorreoKeyTyped
+        if (txtCorreo.getText().length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCorreoKeyTyped
+
+    private void txtCalleKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCalleKeyTyped
+        // TODO add your handling code here:
+        if (txtCalle.getText().length() >= 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCalleKeyTyped
+
+    private void txtColoniaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtColoniaKeyTyped
+        // TODO add your handling code here:
+        if (txtColonia.getText().length() >= 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtColoniaKeyTyped
+
+    private void txtNumCasaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumCasaKeyTyped
+        // TODO add your handling code here:
+        if (txtNumCasa.getText().length() >= 5) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNumCasaKeyTyped
 
     /**
      * @param args the command line arguments

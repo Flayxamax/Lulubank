@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface IRetirosDAO {
     List<Retiro> consultarLista(Integer idCuenta) throws PersistenciaException;
-    void insertar(Integer idCuenta, Double monto) throws PersistenciaException;
+    Retiro insertar(Integer idCuenta, Double monto) throws PersistenciaException;
 }

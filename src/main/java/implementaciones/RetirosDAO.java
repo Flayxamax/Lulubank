@@ -31,7 +31,7 @@ public class RetirosDAO implements IRetirosDAO {
     }
 
     @Override
-    public void insertar(Integer idCuenta, Double monto) throws PersistenciaException {
+    public Retiro insertar(Integer idCuenta, Double monto) throws PersistenciaException {
         try {
             Connection conexion = GENERADOR_CONEXIONES.crearConexion();
             CallableStatement cstmt = conexion.prepareCall("{call retiro(?, ?)}");
@@ -42,6 +42,7 @@ public class RetirosDAO implements IRetirosDAO {
             LOG.log(Level.SEVERE, e.getMessage());
             throw new PersistenciaException("No fue posible registrar transferencia");
         }
+        return null;
     }
 
     @Override

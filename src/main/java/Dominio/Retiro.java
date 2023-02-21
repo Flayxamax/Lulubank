@@ -49,6 +49,11 @@ public class Retiro {
         this.idCuenta = idCuenta;
     }
 
+    public Retiro(Integer folio, String contrasena) {
+        this.folio = folio;
+        this.contrasena = contrasena;
+    }
+    
     public Retiro() {
     }
 
