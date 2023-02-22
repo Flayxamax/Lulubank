@@ -13,6 +13,19 @@ import java.util.regex.Pattern;
  */
 public class Validadores {
 
+    /**
+     *
+     * Valida una contraseña según una expresión regular.
+     *
+     * La contraseña debe contener al menos 8 caracteres y un máximo de 20,
+     *
+     * al menos una letra minúscula, una letra mayúscula, un número y un
+     * carácter especial.
+     *
+     * @param s la contraseña a validar
+     *
+     * @return true si la contraseña es válida, false en caso contrario.
+     */
     public boolean validaContrasena(String s) {
         CharSequence cadena = s;
         String recadena = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])([A-Za-z\\d$@$!%*?&]|[^ ]){8,20}$";
@@ -26,6 +39,18 @@ public class Validadores {
         return false;
     }
 
+    /**
+     *
+     * Valida un nombre según una expresión regular.
+     *
+     * El nombre debe contener al menos 3 caracteres y un máximo de 50,
+     *
+     * sólo puede contener letras mayúsculas y minúsculas y espacios en blanco.
+     *
+     * @param s el nombre a validar
+     *
+     * @return true si el nombre es válido, false en caso contrario.
+     */
     public boolean validaNombre(String s) {
         CharSequence cadena = s;
         String recadena = "^[a-zA-Z ]{3,50}$";
@@ -39,6 +64,18 @@ public class Validadores {
         return false;
     }
 
+    /**
+     *
+     * Valida un apellido según una expresión regular.
+     *
+     * El apellido debe contener al menos 3 caracteres y un máximo de 30,
+     *
+     * sólo puede contener letras mayúsculas y minúsculas.
+     *
+     * @param s el apellido a validar
+     *
+     * @return true si el apellido es válido, false en caso contrario.
+     */
     public boolean validaApellido(String s) {
         CharSequence cadena = s;
         String recadena = "^[a-zA-Z]{3,30}$";
@@ -70,7 +107,15 @@ public class Validadores {
         }
         return false;
     }
-    
+
+    /**
+     *
+     * Verifica si una cadena es vacía o no.
+     *
+     * @param s la cadena a verificar
+     *
+     * @return true si la cadena no es vacía, false en caso contrario
+     */
     public boolean esVacia(String s) {
         CharSequence cadena = s;
         String recadena = "^.+$";

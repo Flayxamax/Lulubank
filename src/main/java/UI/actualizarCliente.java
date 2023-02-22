@@ -43,13 +43,6 @@ public class actualizarCliente extends javax.swing.JFrame {
     private int xMouse;
     private int yMouse;
 
-    /**
-     * Creates new form registrarCliente
-     *
-     * @param clientesDAO
-     * @param direccionDAO
-     * @param cuentasDAO
-     */
     public actualizarCliente(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO, ITransferenciasDAO transferenciasDAO, String correo, IRetirosDAO retirosDAO) throws PersistenciaException {
         this.clientesDAO = clientesDAO;
         this.direccionDAO = direccionDAO;
@@ -138,7 +131,6 @@ public class actualizarCliente extends javax.swing.JFrame {
     }
 
     private void guardar() {
-        //Enviar a DAO
         try {
             Cliente clienteLogueado = this.clientesDAO.consultar(correo);
             Direccion direccion = this.extraerDireccionFormulario();
@@ -652,9 +644,6 @@ public class actualizarCliente extends javax.swing.JFrame {
         } else {
             guardar();
         }
-//        inicio in = new inicio(clientesDAO, direccionDAO);
-//        in.setVisible(true);
-//        dispose();
     }//GEN-LAST:event_lblActualizarMouseClicked
 
     private void headerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_headerMousePressed

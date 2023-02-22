@@ -25,15 +25,25 @@ public class ClientesDAO implements IClientesDAO {
     private static final Logger LOG = Logger.getLogger(ClientesDAO.class.getName());
     private final IConexionBD GENERADOR_CONEXIONES;
 
+    /**
+     *
+     * Constructor de la clase
+     *
+     * @param generadorConexiones objeto que permite generar conexiones a la
+     * base de datos
+     */
     public ClientesDAO(IConexionBD generadorConexiones) {
         this.GENERADOR_CONEXIONES = generadorConexiones;
     }
 
     /**
      *
-     * @param correo
-     * @return null
-     * @throws PersistenciaException
+     * Método que permite consultar un cliente a partir de su correo electrónico
+     *
+     * @param correo correo electrónico del cliente a consultar
+     * @return objeto Cliente que contiene los datos del cliente consultado
+     * @throws PersistenciaException si ocurre un error al acceder a la base de
+     * datos
      */
     @Override
     public Cliente consultar(String correo) throws PersistenciaException {
@@ -59,6 +69,17 @@ public class ClientesDAO implements IClientesDAO {
         return cliente;
     }
 
+    /**
+     *
+     * Método que permite insertar un nuevo cliente en la base de datos
+     *
+     * @param cliente objeto Cliente que contiene los datos del cliente a
+     * insertar
+     * @return objeto Cliente que contiene los datos del cliente insertado,
+     * incluyendo su id generado
+     * @throws PersistenciaException si ocurre un error al acceder a la base de
+     * datos
+     */
     @Override
     public Cliente insertar(Cliente cliente) throws PersistenciaException {
         String codigoSQL = "INSERT INTO clientes(nombre,apellido_paterno,"
@@ -89,6 +110,16 @@ public class ClientesDAO implements IClientesDAO {
         }
     }
 
+    /**
+     *
+     * Actualiza un registro de la tabla 'clientes' en la base de datos
+     *
+     * @param cliente Objeto Cliente con los nuevos datos a actualizar
+     * @param idCliente Identificador del registro a actualizar en la tabla
+     * @return Objeto Cliente actualizado
+     * @throws PersistenciaException Si ocurre un error al actualizar el
+     * registro en la base de datos
+     */
     @Override
     public Cliente actualizar(Cliente cliente, Integer idCliente) throws PersistenciaException {
         String codigoSQL = "update clientes set nombre = ?, apellido_paterno = ?, apellido_materno = ?, fecha_nacimiento = ?, edad = ?, correo = ?, contrasena = aes_encrypt(?, 'hunter2'), id_direccion = ? where id_cliente = ?";

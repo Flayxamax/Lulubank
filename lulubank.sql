@@ -84,7 +84,7 @@ END;
 //
 DELIMITER ;
 
-/*
+DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `transferencia`(IN manda INT, IN recibe INT, IN montoT decimal(10, 2))
 BEGIN
 
@@ -109,7 +109,10 @@ ELSE
 END IF;
 
 END
+//
+DELIMITER ;
 
+DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `transferencia`(IN manda INT, IN recibe INT, IN montoT decimal(10, 2))
 BEGIN
 
@@ -134,7 +137,10 @@ ELSE
 END IF;
 
 END
+//
+DELIMITER ;
 
+DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `retiro`(IN folio INT, IN manda INT, IN montoT decimal(10, 2))
 BEGIN
 
@@ -158,4 +164,5 @@ ELSE
 END IF;
 
 END
-*/
+//
+DELIMITER ;

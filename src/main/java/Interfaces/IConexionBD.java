@@ -12,5 +12,13 @@ import java.sql.SQLException;
  * @author ildex
  */
 public interface IConexionBD {
+
+    /**
+     *
+     * Crea y devuelve una conexión con la base de datos.
+     *
+     * @return Una conexión con la base de datos.
+     * @throws SQLException Si ocurre un error al conectarse a la base de datos.
+     */
     Connection crearConexion() throws SQLException;
 }

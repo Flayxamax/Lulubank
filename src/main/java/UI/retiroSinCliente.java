@@ -37,15 +37,6 @@ public class retiroSinCliente extends javax.swing.JFrame {
     private int xMouse;
     private int yMouse;
 
-    /**
-     * Creates new form Operaciones
-     *
-     * @param clientesDAO
-     * @param direccionDAO
-     * @param correo
-     * @param cuentasDAO
-     * @throws Excepciones.PersistenciaException
-     */
     public retiroSinCliente(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, String correo, ICuentasDAO cuentasDAO, ITransferenciasDAO transferenciasDAO, IRetirosDAO retirosDAO) throws PersistenciaException {
         this.clientesDAO = clientesDAO;
         this.direccionDAO = direccionDAO;
@@ -68,6 +59,11 @@ public class retiroSinCliente extends javax.swing.JFrame {
         btnRetirar.setVisible(true);
         lblRetirar.setVisible(true);
         txtPass.setVisible(true);
+    }
+
+    private void limpiarTxtRetiro() {
+        txtFolio.setText("");
+        txtPass.setText("");
     }
 
     /**
@@ -417,6 +413,7 @@ public class retiroSinCliente extends javax.swing.JFrame {
                     Retiro cuenta = this.retirosDAO.consultarCuenta(folio);
                     this.cuentasDAO.actualizarDescMonto(cuenta.getIdCuenta(), cuenta.getMonto());
                     JOptionPane.showMessageDialog(this, "Retiro satisfactorio", "LuluAdmin", 1);
+                    limpiarTxtRetiro();
                 }
             } catch (PersistenciaException ex) {
                 Logger.getLogger(retiroSinCliente.class.getName()).log(Level.SEVERE, null, ex);

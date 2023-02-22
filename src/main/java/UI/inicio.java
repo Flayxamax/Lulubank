@@ -35,14 +35,6 @@ public class inicio extends javax.swing.JFrame {
     private int xMouse;
     private int yMouse;
 
-    /**
-     * Creates new form inicio
-     *
-     * @param clientesDAO
-     * @param direccionDAO
-     * @param cuentasDAO
-     * @param transferenciasDAO
-     */
     public inicio(IClientesDAO clientesDAO, IDireccionDAO direccionDAO, ICuentasDAO cuentasDAO, ITransferenciasDAO transferenciasDAO, IRetirosDAO retirosDAO) {
         initComponents();
         this.clientesDAO = clientesDAO;

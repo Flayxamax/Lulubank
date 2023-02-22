@@ -25,10 +25,26 @@ public class DireccionDAO implements IDireccionDAO {
     private static final Logger LOG = Logger.getLogger(ClientesDAO.class.getName());
     private final IConexionBD GENERADOR_CONEXIONES;
 
+    /**
+     *
+     * Constructor de la clase que recibe un generador de conexiones a la base
+     * de datos
+     *
+     * @param generadorConexiones Objeto que permite generar una conexión a la
+     * base de datos
+     */
     public DireccionDAO(IConexionBD generadorConexiones) {
         this.GENERADOR_CONEXIONES = generadorConexiones;
     }
 
+    /**
+     *
+     * Inserta una nueva dirección en la base de datos.
+     *
+     * @param direccion la dirección que se desea insertar en la base de datos
+     * @return la dirección insertada con el identificador generado
+     * @throws PersistenciaException si ocurre algún error durante la inserción
+     */
     @Override
     public Direccion insertar(Direccion direccion) throws PersistenciaException {
         String codigoSQL = "INSERT INTO direcciones(calle,colonia,"
@@ -54,6 +70,17 @@ public class DireccionDAO implements IDireccionDAO {
         }
     }
 
+    /**
+     *
+     * Consulta la dirección correspondiente al id del cliente dado.
+     *
+     * @param idCliente el id del cliente para el cual se desea consultar la
+     * dirección
+     * @return una instancia de la clase Direccion correspondiente al id del
+     * cliente dado
+     * @throws PersistenciaException si ocurre un error al conectarse a la base
+     * de datos o ejecutar la consulta
+     */
     @Override
     public Direccion consultar(Integer idCliente) throws PersistenciaException {
         Direccion direccion = new Direccion();
@@ -74,6 +101,17 @@ public class DireccionDAO implements IDireccionDAO {
         return direccion;
     }
 
+    /**
+     *
+     * Actualiza una dirección existente en la base de datos.
+     *
+     * @param direccion la dirección que se desea actualizar
+     * @param idDireccion el identificador de la dirección que se desea
+     * actualizar
+     * @return la dirección actualizada
+     * @throws PersistenciaException si ocurre algún error durante la
+     * actualización
+     */
     @Override
     public Direccion actualizar(Direccion direccion, Integer idDireccion) throws PersistenciaException {
         String codigoSQL = "update direcciones set calle = ?, colonia = ?, numero = ? where id_direccion = ?";
